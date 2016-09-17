@@ -9,6 +9,7 @@ class View(BaseComponent):
     def th_struct(self,struct):
         r = struct.view().rows()
         r.fieldcell('name')
+        r.fieldcell('position')
         r.fieldcell('board_id')
 
     def th_order(self):
@@ -25,6 +26,7 @@ class Form(BaseComponent):
         pane = form.record
         fb = pane.formbuilder(cols=2, border_spacing='4px')
         fb.field('name')
+        fb.field('position')
         fb.field('board_id')
 
 
