@@ -4,6 +4,8 @@
 
 def config(root, application=None):
 
+    root.thpage(u'Homepage', file='main_page')
+
     models = root.branch(u'Models', tags="admin")
     models.thpage(u'Team', table='base.team')
     models.thpage(u'Board', table='base.board')

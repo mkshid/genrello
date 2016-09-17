@@ -12,6 +12,7 @@ class Table(object):
         tbl.column('name', name_short='Name',
                    validate_notnull=True, validate_case='c',
                    validate_notnull_error='!!Mandatory field')
+        tbl.column('position', dtype='I', name_long='!!Position')
 
         tbl.column(
             'board_id', size='22', group='_',
