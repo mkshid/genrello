@@ -28,5 +28,5 @@ class Table(object):
                 'adm.user.id', relation_name='comment_user',
                 mode='foreignkey', onDelete='cascade'
             )
-        tbl.aliasColumn('username', relation_path='@user_id.username',
+        tbl.aliasColumn('username', relation_path='@owner_user_id.username',
                         name_long='!!Username')

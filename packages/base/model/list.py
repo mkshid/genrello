@@ -20,5 +20,3 @@ class Table(object):
                 'board.id', relation_name='list_board',
                 mode='foreignkey', onDelete='cascade'
             )
-        tbl.aliasColumn('username', relation_path='@user_id.username',
-                        name_long='!!Username')
