@@ -87,3 +87,18 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+
+_static
+# python compiled
+*.pyc
+*.pyo
+
+# emacs 
+\#*\#
+*.*~
+
+# genropy project files
+sites/genrello/data/
+sites/genrello/uploaded_files/
+

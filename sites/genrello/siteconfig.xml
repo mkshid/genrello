@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<GenRoBag>
+	<wsgi mainpackage="base"/>
+
+	<connection_timeout/>
+
+	<connection_refresh/>
+
+	<dojo version="11"/>
+    <gui css_theme='modren'/>
+
+</GenRoBag>
