@@ -6,10 +6,11 @@ from gnr.core.gnrdecorator import public_method
 
 class View(BaseComponent):
 
-    def th_struct(self,struct):
+    def th_struct(self, struct):
         r = struct.view().rows()
         r.fieldcell('name')
         r.fieldcell('description')
+        r.fieldcell('position')
         r.fieldcell('team_id')
         r.fieldcell('owner_user_id')
 
@@ -28,6 +29,7 @@ class Form(BaseComponent):
         fb = pane.formbuilder(cols=2, border_spacing='4px')
         fb.field('name')
         fb.field('description')
+        fb.field('position')
         fb.field('team_id')
         fb.field('owner_user_id')
 

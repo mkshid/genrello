@@ -14,6 +14,7 @@ class Table(object):
                    validate_notnull_error='!!Mandatory field')
 
         tbl.column('description', name_long='!!Description')
+        tbl.column('position', dtype='I', name_long='!!Position')
 
         tbl.column(
             'team_id', size='22', group='_',
@@ -31,4 +32,8 @@ class Table(object):
                 mode='foreignkey', onDelete='cascade'
             )
         tbl.aliasColumn('username', relation_path='@owner_user_id.username',
-                        name_long='!![it]Nome Utente')
+                        name_long='!!Username')
+
+        tbl.aliasColumn('team_name',
+                        relation_path='@team_id.name',
+                        name_long='!!Team name')
