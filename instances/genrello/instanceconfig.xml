@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<GenRoBag>
+	<db dbname="genrello"/>
+
+	<packages>
+		<gnrcore_sys pkgcode="gnrcore:sys"/>
+		<gnrcore_adm pkgcode="gnrcore:adm"/>
+		<base pkgcode="base"/>
+	</packages>
+
+	<authentication pkg="gnrcore:sys">
+		<py_auth defaultTags="user" method="authenticate" pkg="adm"/>
+	</authentication>
+</GenRoBag>
