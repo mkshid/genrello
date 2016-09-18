@@ -77,7 +77,8 @@ class GnrCustomWebPage(object):
         qs = tbl.query(
             '$name,$description,$position,$list_name,$list_id',
             where='$list_board_id=:board_id',
-            board_id=board_id
+            board_id=board_id,
+            order_by='$position'
         ).fetch()
         result = Bag()
         for r in qs:
