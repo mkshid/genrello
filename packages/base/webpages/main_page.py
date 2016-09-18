@@ -8,6 +8,7 @@ from gnr.core.gnrdecorator import public_method
 class GnrCustomWebPage(object):
 
     css_requires = 'css/base'
+    js_requires = 'js/main_page'
 
     def main(self, root, **kwargs):
         frame = root.framePane()
@@ -37,14 +38,20 @@ class GnrCustomWebPage(object):
                 team_div.li(
                     board_id=board_id ,
                     _class='board-list-item',
-                    connect_onclick="console.log(this.getAttr('board_id'))",
+                    connect_onclick="""
+                       var board_id = this.getAttr('board_id')
+                       var that = this;
+                       // call a function to generate the board page
+                       generate_board_page(that, board_id);
+                    """,
                 ).div(
                     '^.{0}.{1}.name'.format(team_id, board_id),
                     _class='board-tile'
                 )
 
     def board_page(self, pane):
-        pass
+        # Entry point of the board page.
+        pane.div(id='board_page', nodeId='board_page')
 
     @public_method
     def get_teams_boards(self):
