@@ -8,6 +8,7 @@ from gnr.core.gnrdecorator import public_method
 class GnrCustomWebPage(object):
 
     css_requires = 'css/base'
+    js_requires = 'js/main_page'
 
     def main(self, root, **kwargs):
         frame = root.framePane()
@@ -37,14 +38,20 @@ class GnrCustomWebPage(object):
                 team_div.li(
                     board_id=board_id ,
                     _class='board-list-item',
-                    connect_onclick="console.log(this.getAttr('board_id'))",
+                    connect_onclick="""
+                       var board_id = this.getAttr('board_id')
+                       var that = this;
+                       // call a function to generate the board page
+                       generate_board_page(that, board_id);
+                    """,
                 ).div(
                     '^.{0}.{1}.name'.format(team_id, board_id),
                     _class='board-tile'
                 )
 
     def board_page(self, pane):
-        pass
+        # Entry point of the board page.
+        pane.div(id='board_page', nodeId='board_page')
 
     @public_method
     def get_teams_boards(self):
@@ -60,4 +67,21 @@ class GnrCustomWebPage(object):
         for r in qs:
             result.setAttr(r['team_id'], team_name=r['team_name'])
             result.setItem('{0}.{1}'.format(r['team_id'], r['pkey']), Bag(r))
+        return result
+
+    @public_method
+    def get_lists_cards(self, board_id):
+        """Gets a bag with lists and cards"""
+
+        tbl = self.db.table('base.card')
+        qs = tbl.query(
+            '$name,$description,$position,$list_name,$list_id',
+            where='$list_board_id=:board_id',
+            board_id=board_id,
+            order_by='$position'
+        ).fetch()
+        result = Bag()
+        for r in qs:
+            result.setAttr(r['list_id'], list_name=r['list_name'])
+            result.setItem('{0}.{1}'.format(r['list_id'], r['pkey']), Bag(r))
         return result

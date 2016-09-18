@@ -33,3 +33,7 @@ class Table(object):
             )
         tbl.aliasColumn('username', relation_path='@owner_user_id.username',
                         name_long='!!Username')
+        tbl.aliasColumn('list_name', relation_path='@list_id.name',
+                        name_long='!!List Name')
+        tbl.aliasColumn('list_board_id', relation_path='@list_id.board_id',
+                        name_long='!!List Board id')
