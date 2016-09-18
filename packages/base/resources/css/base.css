@@ -37,3 +37,13 @@
     text-decoration: none;
     min-height: 60px;
 }
+
+.list-wrapper {
+    width: 270px;
+    margin: 0 5px;
+    height: 100%;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+    white-space: nowrap;
+}
