@@ -68,3 +68,19 @@ class GnrCustomWebPage(object):
             result.setAttr(r['team_id'], team_name=r['team_name'])
             result.setItem('{0}.{1}'.format(r['team_id'], r['pkey']), Bag(r))
         return result
+
+    @public_method
+    def get_lists_cards(self, board_id):
+        """Gets a bag with lists and cards"""
+
+        tbl = self.db.table('base.card')
+        qs = tbl.query(
+            '$name,$description,$position,$list_name,$list_id',
+            where='$list_board_id=:board_id',
+            board_id=board_id
+        ).fetch()
+        result = Bag()
+        for r in qs:
+            result.setAttr(r['list_id'], team_name=r['list_name'])
+            result.setItem('{0}.{1}'.format(r['list_id'], r['pkey']), Bag(r))
+        return result
