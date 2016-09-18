@@ -16,6 +16,8 @@ class GnrCustomWebPage(object):
         self.team_page(sc.contentPane(title='!!Teams', datapath='team'))
         self.board_page(sc.contentPane(title='!!Board', datapath='board'))
 
+        frame.top.slotToolbar('*,stackButtons,*', _class='page_slotbar')
+        sc.data('^page_selected', 0)
 
     def team_page(self, pane):
         qs =  self.get_teams_boards()
@@ -30,17 +32,19 @@ class GnrCustomWebPage(object):
             ).ul(_class='board-list')
 
             for v in values:
+                board_id = v.getValue().getItem('pkey')
+                # Set the board_id as attribute so i can use to his list etc..
                 team_div.li(
-                    '^.{0}.{1}.name'.format(
-                        team_id,
-                        v.getValue().getItem('pkey')),
-                    connect_onclick='debugger;',
+                    board_id=board_id ,
+                    _class='board-list-item',
+                    connect_onclick="console.log(this.getAttr('board_id'))",
+                ).div(
+                    '^.{0}.{1}.name'.format(team_id, board_id),
                     _class='board-tile'
                 )
 
     def board_page(self, pane):
         pass
-
 
     @public_method
     def get_teams_boards(self):

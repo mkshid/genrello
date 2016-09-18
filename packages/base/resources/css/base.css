@@ -12,20 +12,18 @@
     -webkit-flex-wrap: wrap;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-
-}
-.board-list ul {
     list-style: none;
-    margin-left: 10px;
 }
 
-.board-tile {
+.board-list-item {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     padding: 0 1pc 8px 0;
     position: relative;
     width: 25%;
+}
 
+.board-tile {
     background-color: rgb(0, 121, 191);
     background-size: cover;
     background-position: center center;
@@ -37,5 +35,5 @@
     padding: 8px 9pt;
     position: relative;
     text-decoration: none;
-    height: 100px;
+    min-height: 60px;
 }
