@@ -82,6 +82,6 @@ class GnrCustomWebPage(object):
         ).fetch()
         result = Bag()
         for r in qs:
-            result.setAttr(r['list_id'], team_name=r['list_name'])
+            result.setAttr(r['list_id'], list_name=r['list_name'])
             result.setItem('{0}.{1}'.format(r['list_id'], r['pkey']), Bag(r))
         return result
