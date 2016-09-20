@@ -37,6 +37,10 @@
     text-decoration: none;
     min-height: 60px;
 }
+.board-tile:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
 
 .list-wrapper {
     width: 270px;
