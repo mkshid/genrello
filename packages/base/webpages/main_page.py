@@ -55,6 +55,8 @@ class GnrCustomWebPage(object):
 
     @public_method
     def get_teams_boards(self):
+        """Gets a bag with team and boards"""
+
         tbl = self.db.table('base.board')
         qs = tbl.query(
             '$name,$team_id,$team_name,$position',
