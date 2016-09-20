@@ -22,10 +22,17 @@ function generate_board_page(that, board_id){
         list_div._('h3', {innerHTML: '^.' + k + '?list_name'});
 
          // create a ul for the cards
-         var ul = list_div._('ul');
-         var cards = res_asDict[k];
-         for (var c in cards){
-             ul._('li', {innerHTML: '^.' + k + '.' + c + '.name'});
+        var list_cards = list_div._('div', {_class: 'list-cards'});
+        var cards = res_asDict[k];
+        for (var c in cards){
+            var card =list_cards._('div', {
+                _class: 'list-card'
+            });
+            card._('div', {
+                innerHTML: '^.' + k + '.' + c + '.name',
+                _class: 'list-card-label'
+            });
+
         }
     }
 
