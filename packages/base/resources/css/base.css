@@ -44,10 +44,31 @@
 
 .list-wrapper {
     width: 270px;
-    margin: 0 5px;
+    margin: 10px;
     height: 100%;
     box-sizing: border-box;
     display: inline-block;
     vertical-align: top;
     white-space: nowrap;
+}
+
+.gen-list {
+    background: #E2E4E6;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    max-height: 100%;
+    position: relative;
+    white-space: normal;
+}
+
+.gen-list h3 {
+    padding: 0 20px 10px 20px;
+    border-bottom: 1px solid white;
 }
