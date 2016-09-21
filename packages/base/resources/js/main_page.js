@@ -22,11 +22,14 @@ function generate_board_page(that, board_id){
         list_div._('h3', {innerHTML: '^.' + k + '?list_name'});
 
          // create a ul for the cards
-        var list_cards = list_div._('div', {_class: 'list-cards'});
+        var list_cards = list_div._('div', {
+            _class: 'list-cards',
+            dropTarget: true, dropTypes:'*',
+        });
         var cards = res_asDict[k];
         for (var c in cards){
             var card =list_cards._('div', {
-                _class: 'list-card'
+                _class: 'list-card', draggable: true,
             });
             card._('div', {
                 innerHTML: '^.' + k + '.' + c + '.name',
