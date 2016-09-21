@@ -22,11 +22,53 @@ function generate_board_page(that, board_id){
         list_div._('h3', {innerHTML: '^.' + k + '?list_name'});
 
          // create a ul for the cards
-        var list_cards = list_div._('div', {_class: 'list-cards'});
+        var list_cards = list_div._('div', {
+            id: k,
+            _class: 'list-cards',
+            dropTarget: true, dropTypes:'*',
+            onDrop: function(dropInfo, data, _kwargs){
+                var domNode = dropInfo.domnode;
+                var card_pkey = data.card_pkey;
+                var src_list_pkey = data.src_list_pkey;
+                var dest_list_pkey = domNode.id;
+
+                var board_store = this.getRelativeData('board');
+
+                // Gets the card bag
+                card_bag = board_store.getItem(src_list_pkey + '.' + card_pkey);
+
+                // Remove the card from the previous list
+                board_store.delItem(src_list_pkey + '.' + card_pkey);
+
+                // Update the card bag with new infos
+                var list_name = board_store.getAttr(
+                    dest_list_pkey, list_name)['list_name'];
+                card_bag.setItem('list_id', dest_list_pkey);
+                card_bag.setItem('list_name', list_name);
+
+                // Add the card to the new list
+                board_store.setItem(dest_list_pkey + '.' + card_pkey, card_bag);
+
+
+                // Appends to the current domNode (list) the dragged card
+                var card = document.getElementById(card_pkey);
+                // update the label as it was generated through datapath
+                var card_lbl = card.getElementsByClassName('list-card-label')[0];
+                card_lbl.innerText = card_bag.getItem('name');
+                domNode.appendChild(card);
+            }
+        });
+
         var cards = res_asDict[k];
         for (var c in cards){
             var card =list_cards._('div', {
-                _class: 'list-card'
+                id: c,
+                _class: 'list-card', draggable: true,
+                onDrag: function(dragValues, dragInfo, treeItem){
+                    var domNode = dragInfo.domnode;
+                    dragValues['card_pkey'] = domNode.id;
+                    dragValues['src_list_pkey'] = domNode.parentNode.id;
+                }
             });
             card._('div', {
                 innerHTML: '^.' + k + '.' + c + '.name',
