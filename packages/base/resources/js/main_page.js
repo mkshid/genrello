@@ -23,13 +23,21 @@ function generate_board_page(that, board_id){
 
          // create a ul for the cards
         var list_cards = list_div._('div', {
+            id: k,
             _class: 'list-cards',
             dropTarget: true, dropTypes:'*',
         });
+
         var cards = res_asDict[k];
         for (var c in cards){
             var card =list_cards._('div', {
+                id: c,
                 _class: 'list-card', draggable: true,
+                onDrag: function(dragValues, dragInfo, treeItem){
+                    var domNode = dragInfo.domnode;
+                    dragValues['card_pkey'] = domNode.id;
+                    dragValues['source_list_pkey'] = domNode.parentNode.id;
+                }
             });
             card._('div', {
                 innerHTML: '^.' + k + '.' + c + '.name',
