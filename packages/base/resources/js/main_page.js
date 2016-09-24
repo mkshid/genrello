@@ -37,6 +37,7 @@ function generate_board_page(that, board_id){
          // create a ul for the cards
         var list_cards = list_div._('div', {
             id: k,
+            nodeId:k,
             _class: 'list-cards',
             dropTarget: true, dropTypes:'*',
             onDrop: function(dropInfo, data, _kwargs){
@@ -72,26 +73,98 @@ function generate_board_page(that, board_id){
                 domNode.appendChild(card);
             }
         });
+        list_div._('div', {
+            innerHTML: 'Add a card...',
+            list_id: k,
+            _class:'add-new-card',
+            connect_onclick: "var that=this; create_new_card(that);"
+        });
 
         var cards = res_asDict[k];
         for (var c in cards){
-            var card =list_cards._('div', {
-                id: c,
-                _class: 'list-card', draggable: true,
-                onDrag: function(dragValues, dragInfo, treeItem){
-                    var domNode = dragInfo.domnode;
-                    dragValues['card_pkey'] = domNode.id;
-                    dragValues['src_list_pkey'] = domNode.parentNode.id;
-                }
-            });
-            card._('div', {
-                innerHTML: '^.' + board_id + '.' + k + '.' + c + '.name',
-                _class: 'list-card-label'
-            });
-
+            create_card(list_cards, board_id, k, c);
         }
     }
 
     // Once done with the rendering change the page
     that.setRelativeData('page_selected', 1);
+}
+
+
+function create_card(list_cards_div, board_id, list_id, card_id){
+    var card = list_cards_div._('div', {
+        id: card_id,
+        _class: 'list-card', draggable: true,
+        onDrag: function(dragValues, dragInfo, treeItem){
+            var domNode = dragInfo.domnode;
+            dragValues['card_pkey'] = domNode.id;
+            dragValues['src_list_pkey'] = domNode.parentNode.id;
+        }
+    });
+    if (card_id != 'tempcard'){
+        card._('div', {
+            innerHTML: '^.' + board_id + '.' + list_id + '.' + card_id + '.name',
+            _class: 'list-card-label'
+        });
+    } else {
+        card._('textArea', {
+            value: '',
+            board_id: board_id,
+            list_id: list_id,
+            _class: 'add-new-card-textarea',
+            connect_onkeyup: "var that=this; save_card_title(that, event);"
+        });
+
+    }
+}
+
+
+function create_new_card(that){
+    /* Create a new card as temp */
+
+    var list_id = that.getAttr('list_id');
+    var board_id = that.getRelativeData('board_id')
+    var list_cards_div = genro.nodeById(list_id);
+    var card_creating = that.getRelativeData(
+        'board.' + board_id + '.' + list_id + '.tempcard'
+    );
+
+    if (card_creating == null){
+        that.setRelativeData('board.' + board_id + '.' + list_id + '.tempcard', true);
+        create_card(list_cards_div, board_id, list_id, 'tempcard');
+    }
+}
+
+
+function save_card_title(that, event){
+    /* Save the new card once enter is pressed  */
+
+    var board_id = that.getRelativeData('board_id');
+    var list_id = that.getAttr('list_id');
+    if (event.keyCode == 13){
+        // In case of enter save the card
+        var card = genro.serverCall('save_card', {
+            list_id: list_id,
+            card_name: that.domNode.value
+        });
+
+        var card_id = card.getItem('id');
+        // Sets the saved card in store
+        that.setRelativeData(
+            'board.' + board_id + '.' + list_id + '.' + card_id,
+            card
+        );
+
+        var list_cards_div = genro.nodeById(list_id);
+        // remove the temp  card
+        document.getElementById('tempcard').remove();
+        // set the tempcard in store to null
+        that.setRelativeData('board.' + board_id + '.' + list_id + '.tempcard', null);
+        // create the new saved card
+        create_card(list_cards_div, board_id, list_id, card_id);
+
+    } else if (event.keyCode == 27){
+        // In case of esc remove the card div
+        document.getElementById('tempcard').remove();
+    }
 }
