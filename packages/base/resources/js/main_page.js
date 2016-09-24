@@ -134,3 +134,37 @@ function create_new_card(that){
         create_card(list_cards_div, board_id, list_id, 'tempcard');
     }
 }
+
+
+function save_card_title(that, event){
+    /* Save the new card once enter is pressed  */
+
+    var board_id = that.getRelativeData('board_id');
+    var list_id = that.getAttr('list_id');
+    if (event.keyCode == 13){
+        // In case of enter save the card
+        var card = genro.serverCall('save_card', {
+            list_id: list_id,
+            card_name: that.domNode.value
+        });
+
+        var card_id = card.getItem('id');
+        // Sets the saved card in store
+        that.setRelativeData(
+            'board.' + board_id + '.' + list_id + '.' + card_id,
+            card
+        );
+
+        var list_cards_div = genro.nodeById(list_id);
+        // remove the temp  card
+        document.getElementById('tempcard').remove();
+        // set the tempcard in store to null
+        that.setRelativeData('board.' + board_id + '.' + list_id + '.tempcard', null);
+        // create the new saved card
+        create_card(list_cards_div, board_id, list_id, card_id);
+
+    } else if (event.keyCode == 27){
+        // In case of esc remove the card div
+        document.getElementById('tempcard').remove();
+    }
+}
