@@ -89,3 +89,17 @@ class GnrCustomWebPage(object):
             result.setAttr(r['list_id'], list_name=r['list_name'])
             result.setItem('{0}.{1}'.format(r['list_id'], r['pkey']), Bag(r))
         return result
+
+
+    @public_method
+    def save_card(self, list_id, card_name):
+        """Save the card """
+
+        tbl = self.db.table('base.card')
+        card = {
+            'name': card_name,
+            'list_id': list_id
+        }
+        tbl.insert(card)
+        tbl.db.commit()
+        return Bag(card)
