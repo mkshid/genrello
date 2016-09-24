@@ -136,3 +136,16 @@
     cursor: pointer;
 
 }
+
+.add-new-card-textarea {
+    background: 0 0;
+    border: none;
+    box-shadow: none;
+    height: auto;
+    margin-bottom: 4px;
+    max-height: 162px;
+    min-height: 54px;
+    overflow-y: auto;
+    padding: 0;
+    width: 100%;
+}
