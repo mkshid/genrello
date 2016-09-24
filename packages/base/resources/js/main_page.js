@@ -75,23 +75,28 @@ function generate_board_page(that, board_id){
 
         var cards = res_asDict[k];
         for (var c in cards){
-            var card =list_cards._('div', {
-                id: c,
-                _class: 'list-card', draggable: true,
-                onDrag: function(dragValues, dragInfo, treeItem){
-                    var domNode = dragInfo.domnode;
-                    dragValues['card_pkey'] = domNode.id;
-                    dragValues['src_list_pkey'] = domNode.parentNode.id;
-                }
-            });
-            card._('div', {
-                innerHTML: '^.' + board_id + '.' + k + '.' + c + '.name',
-                _class: 'list-card-label'
-            });
-
+            create_card(list_cards, board_id, k, c);
         }
     }
 
     // Once done with the rendering change the page
     that.setRelativeData('page_selected', 1);
 }
+
+
+function create_card(list_cards_div, board_id, list_id, card_id){
+    var card = list_cards_div._('div', {
+        id: card_id,
+        _class: 'list-card', draggable: true,
+        onDrag: function(dragValues, dragInfo, treeItem){
+            var domNode = dragInfo.domnode;
+            dragValues['card_pkey'] = domNode.id;
+            dragValues['src_list_pkey'] = domNode.parentNode.id;
+        }
+    });
+    card._('div', {
+        innerHTML: '^.' + board_id + '.' + list_id + '.' + card_id + '.name',
+        _class: 'list-card-label'
+    });
+}
+
