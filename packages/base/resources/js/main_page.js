@@ -37,6 +37,7 @@ function generate_board_page(that, board_id){
          // create a ul for the cards
         var list_cards = list_div._('div', {
             id: k,
+            nodeId:k,
             _class: 'list-cards',
             dropTarget: true, dropTypes:'*',
             onDrop: function(dropInfo, data, _kwargs){
@@ -72,6 +73,12 @@ function generate_board_page(that, board_id){
                 domNode.appendChild(card);
             }
         });
+        list_div._('div', {
+            innerHTML: 'Add a card...',
+            list_id: k,
+            _class:'add-new-card',
+            connect_onclick: "var that=this; create_new_card(that);"
+        });
 
         var cards = res_asDict[k];
         for (var c in cards){
@@ -94,9 +101,36 @@ function create_card(list_cards_div, board_id, list_id, card_id){
             dragValues['src_list_pkey'] = domNode.parentNode.id;
         }
     });
-    card._('div', {
-        innerHTML: '^.' + board_id + '.' + list_id + '.' + card_id + '.name',
-        _class: 'list-card-label'
-    });
+    if (card_id != 'tempcard'){
+        card._('div', {
+            innerHTML: '^.' + board_id + '.' + list_id + '.' + card_id + '.name',
+            _class: 'list-card-label'
+        });
+    } else {
+        card._('textArea', {
+            value: '',
+            board_id: board_id,
+            list_id: list_id,
+            _class: 'add-new-card-textarea',
+            connect_onkeyup: "var that=this; save_card_title(that, event);"
+        });
+
+    }
 }
 
+
+function create_new_card(that){
+    /* Create a new card as temp */
+
+    var list_id = that.getAttr('list_id');
+    var board_id = that.getRelativeData('board_id')
+    var list_cards_div = genro.nodeById(list_id);
+    var card_creating = that.getRelativeData(
+        'board.' + board_id + '.' + list_id + '.tempcard'
+    );
+
+    if (card_creating == null){
+        that.setRelativeData('board.' + board_id + '.' + list_id + '.tempcard', true);
+        create_card(list_cards_div, board_id, list_id, 'tempcard');
+    }
+}
