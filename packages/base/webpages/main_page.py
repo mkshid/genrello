@@ -40,7 +40,9 @@ class GnrCustomWebPage(object):
                     _class='board-list-item',
                     connect_onclick="""
                        var board_id = this.getAttr('board_id')
+                       this.setRelativeData('board_id', board_id);
                        var that = this;
+
                        // call a function to generate the board page
                        generate_board_page(that, board_id);
                     """,
