@@ -119,3 +119,20 @@
     opacity: 0.8;
     cursor: pointer;
 }
+
+.add-new-card {
+    border-radius: 0 0 3px 3px;
+    color: #8c8c8c;
+    display: block;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    padding: 8px 10px;
+    position: relative;
+    text-decoration: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+
+}
