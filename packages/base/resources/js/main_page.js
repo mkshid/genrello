@@ -23,16 +23,16 @@ function generate_board_page(that, board_id){
         'get_lists_cards',
         {board_id: board_id}
     );
+
     // sets the return result to the board datapath
-    that.setRelativeData('board', result);
+    that.setRelativeData('board.'+ board_id, result);
 
     var res_asDict = result.asDict(true);
-
     for (var k in res_asDict){
         var list_wrapper = bp_node._('div', {_class:'list-wrapper'});
         // name of the list
         var list_div = list_wrapper._('div', {_class: 'gen-list'})
-        list_div._('h3', {innerHTML: '^.' + k + '?list_name'});
+        list_div._('h3', {innerHTML: '^.' + board_id + '.' + k + '?list_name'});
 
          // create a ul for the cards
         var list_cards = list_div._('div', {
@@ -45,7 +45,8 @@ function generate_board_page(that, board_id){
                 var src_list_pkey = data.src_list_pkey;
                 var dest_list_pkey = domNode.id;
 
-                var board_store = this.getRelativeData('board');
+                var board_id = this.getRelativeData('board_id');
+                var board_store = this.getRelativeData('board.' + board_id);
 
                 // Gets the card bag
                 card_bag = board_store.getItem(src_list_pkey + '.' + card_pkey);
@@ -84,7 +85,7 @@ function generate_board_page(that, board_id){
                 }
             });
             card._('div', {
-                innerHTML: '^.' + k + '.' + c + '.name',
+                innerHTML: '^.' + board_id + '.' + k + '.' + c + '.name',
                 _class: 'list-card-label'
             });
 
