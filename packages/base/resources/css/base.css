@@ -149,3 +149,12 @@
     padding: 0;
     width: 100%;
 }
+
+.edit-list-name-input {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    width: 100%;
+    font-weight: bold;
+    font-size: 14px;
+}
