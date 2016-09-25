@@ -32,7 +32,11 @@ function generate_board_page(that, board_id){
         var list_wrapper = bp_node._('div', {_class:'list-wrapper'});
         // name of the list
         var list_div = list_wrapper._('div', {_class: 'gen-list'})
-        list_div._('h3', {innerHTML: '^.' + board_id + '.' + k + '?list_name'});
+        list_div._('h3', {
+            innerHTML: '^.' + board_id + '.' + k + '?list_name',
+            list_id: k,
+            connect_ondblclick: "var that=this; edit_list_name(that, event);",
+        });
 
          // create a ul for the cards
         var list_cards = list_div._('div', {
@@ -167,4 +171,56 @@ function save_card_title(that, event){
         // In case of esc remove the card div
         document.getElementById('tempcard').remove();
     }
+}
+
+function edit_list_name(that, event){
+   /* Edit list name and save it on enter */
+
+    var domnode = that.domNode;
+    var pre_edit_value = domnode.innerText;
+    var list_id = that.getAttr('list_id');
+    var board_id = that.getRelativeData('board_id');
+
+    event.stopPropagation();
+
+    domnode.innerText = "";
+    that._('input', {
+        value: pre_edit_value,
+        pre_edit_value: pre_edit_value,
+        list_id:list_id,
+        board_id: board_id,
+        _class: 'edit-list-name-input',
+        connect_onkeyup: function(e){
+
+            // keyCode 13 is enter
+            if(e.keyCode == 13) {
+
+                // server call to save
+                var result = genro.serverCall(
+                    'edit_list_name',
+                    {list_id: this.getAttr('list_id'),
+                     board_id: this.getAttr('board_id'),
+                     value: this.domNode.value }
+                );
+
+                if (result == true){
+                    genro.publish(
+                        'floating_message',
+                        {message: 'List name saved!'});
+
+                    // In case of successful save the input is
+                    // replaced from the text containing the new value.
+                    domnode.innerText = this.domNode.value;
+                } else {
+                    genro.publish(
+                        'floating_message',
+                        {message: 'The list name is required!',
+                         messageType:'error'});
+                }
+
+            } else if(e.keyCode == 27 ){
+                domnode.innerText = this.getAttr('pre_edit_value');
+            }
+        }
+    });
 }
