@@ -103,3 +103,18 @@ class GnrCustomWebPage(object):
         tbl.insert(card)
         tbl.db.commit()
         return Bag(card)
+
+
+    @public_method
+    def edit_list_name(self, list_id, board_id, value):
+        """Save name of a list after the field has been edited"""
+
+        value = value.strip()
+        if not value:
+            return False
+
+        tbl = self.db.table('base.list')
+        tbl.update({'id': list_id, 'name': value,
+                    'board_id': board_id})
+        tbl.db.commit()
+        return True
