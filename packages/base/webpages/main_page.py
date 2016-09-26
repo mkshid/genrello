@@ -127,7 +127,6 @@ class GnrCustomWebPage(object):
         if not value:
             return False
 
-        import ipdb; ipdb.set_trace()
         tbl = self.db.table('base.list')
         new_list = {'name': value,
                     'board_id': board_id}

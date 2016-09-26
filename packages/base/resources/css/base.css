@@ -158,3 +158,38 @@
     font-weight: bold;
     font-size: 14px;
 }
+
+.add-new-list {
+    background: rgba(0,0,0,.12);
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    max-height: 100%;
+    position: relative;
+    white-space: normal;
+    cursor: pointer;
+}
+
+.add-new-list:hover{
+    background: rgba(0,0,0,.18);
+}
+
+.add-new-list h3 {
+    padding: 0 20px 10px 20px;
+    color: white;
+}
+
+.add-new-list-input {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    width: 100%;
+    font-weight: bold;
+    font-size: 14px;
+}
