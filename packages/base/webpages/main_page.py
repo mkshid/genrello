@@ -118,3 +118,19 @@ class GnrCustomWebPage(object):
                     'board_id': board_id})
         tbl.db.commit()
         return True
+
+    @public_method
+    def add_new_list(self, board_id, value):
+        """Add new list"""
+
+        value = value.strip()
+        if not value:
+            return False
+
+        import ipdb; ipdb.set_trace()
+        tbl = self.db.table('base.list')
+        new_list = {'name': value,
+                    'board_id': board_id}
+        tbl.insert(new_list)
+        tbl.db.commit()
+        return Bag(new_list)
