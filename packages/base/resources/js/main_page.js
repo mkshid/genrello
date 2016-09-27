@@ -31,7 +31,7 @@ function generate_board_page(that, board_id){
     for (var k in res_asDict){
         var list_wrapper = bp_node._('div', {_class:'list-wrapper'});
         // name of the list
-        var list_div = list_wrapper._('div', {_class: 'gen-list'})
+        var list_div = list_wrapper._('div', {_class: 'gen-list'});
         list_div._('h3', {
             innerHTML: '^.' + board_id + '.' + k + '?list_name',
             list_id: k,
@@ -89,6 +89,15 @@ function generate_board_page(that, board_id){
             create_card(list_cards, board_id, k, c);
         }
     }
+
+    var add_newlist_wrapper = bp_node._('div', {
+        _class: 'list-wrapper'
+    });
+    var new_list_div = add_newlist_wrapper._('div', {_class: 'add-new-list'});
+    new_list_div._('h3', {
+        innerHTML: 'Add new list',
+        connect_ondblclick: "var that=this; add_new_list(that, event);",
+    });
 
     // Once done with the rendering change the page
     that.setRelativeData('page_selected', 1);
@@ -223,4 +232,50 @@ function edit_list_name(that, event){
             }
         }
     });
+}
+
+
+function add_new_list(that, event){
+    var domnode = that.domNode;
+    var pre_edit_value = domnode.innerText;
+    var board_id = that.getRelativeData('board_id');
+
+    event.stopPropagation();
+
+    domnode.innerText = "";
+    that._('input', {
+        pre_edit_value: pre_edit_value,
+        placeholder: pre_edit_value,
+        board_id: board_id,
+        _class: 'add-new-list-input',
+        connect_onkeyup: function(e){
+
+            // keyCode 13 is enter
+            if(e.keyCode == 13) {
+
+                // server call to save
+                var result = genro.serverCall(
+                    'add_new_list',
+                    {board_id: this.getAttr('board_id'),
+                     value: this.domNode.value}
+                );
+
+                if (result == false){
+                    genro.publish(
+                        'floating_message',
+                        {message: 'The list name is required!',
+                         messageType:'error'});
+
+                } else {
+                    genro.publish(
+                        'floating_message',
+                        {message: 'List saved!'});
+                }
+
+            } else if(e.keyCode == 27 ){
+                domnode.innerText = this.getAttr('pre_edit_value');
+            }
+        }
+    });
+
 }
