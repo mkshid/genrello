@@ -28,66 +28,9 @@ function generate_board_page(that, board_id){
     that.setRelativeData('board.'+ board_id, result);
 
     var res_asDict = result.asDict(true);
-    for (var k in res_asDict){
-        var list_wrapper = bp_node._('div', {_class:'list-wrapper'});
-        // name of the list
-        var list_div = list_wrapper._('div', {_class: 'gen-list'});
-        list_div._('h3', {
-            innerHTML: '^.' + board_id + '.' + k + '?list_name',
-            list_id: k,
-            connect_ondblclick: "var that=this; edit_list_name(that, event);",
-        });
-
-         // create a ul for the cards
-        var list_cards = list_div._('div', {
-            id: k,
-            nodeId:k,
-            _class: 'list-cards',
-            dropTarget: true, dropTypes:'*',
-            onDrop: function(dropInfo, data, _kwargs){
-                var domNode = dropInfo.domnode;
-                var card_pkey = data.card_pkey;
-                var src_list_pkey = data.src_list_pkey;
-                var dest_list_pkey = domNode.id;
-
-                var board_id = this.getRelativeData('board_id');
-                var board_store = this.getRelativeData('board.' + board_id);
-
-                // Gets the card bag
-                card_bag = board_store.getItem(src_list_pkey + '.' + card_pkey);
-
-                // Remove the card from the previous list
-                board_store.delItem(src_list_pkey + '.' + card_pkey);
-
-                // Update the card bag with new infos
-                var list_name = board_store.getAttr(
-                    dest_list_pkey, list_name)['list_name'];
-                card_bag.setItem('list_id', dest_list_pkey);
-                card_bag.setItem('list_name', list_name);
-
-                // Add the card to the new list
-                board_store.setItem(dest_list_pkey + '.' + card_pkey, card_bag);
-
-
-                // Appends to the current domNode (list) the dragged card
-                var card = document.getElementById(card_pkey);
-                // update the label as it was generated through datapath
-                var card_lbl = card.getElementsByClassName('list-card-label')[0];
-                card_lbl.innerText = card_bag.getItem('name');
-                domNode.appendChild(card);
-            }
-        });
-        list_div._('div', {
-            innerHTML: 'Add a card...',
-            list_id: k,
-            _class:'add-new-card',
-            connect_onclick: "var that=this; create_new_card(that);"
-        });
-
-        var cards = res_asDict[k];
-        for (var c in cards){
-            create_card(list_cards, board_id, k, c);
-        }
+    for (var list_id in res_asDict){
+        var cards = res_asDict[list_id];
+        create_list(bp_node, board_id, list_id, cards);
     }
 
     var add_newlist_wrapper = bp_node._('div', {
@@ -232,6 +175,71 @@ function edit_list_name(that, event){
             }
         }
     });
+}
+
+
+function create_list(board_node, board_id, list_id, cards){
+
+    var list_wrapper = board_node._('div', {_class:'list-wrapper'});
+
+    // name of the list
+    var list_div = list_wrapper._('div', {_class: 'gen-list'});
+    list_div._('h3', {
+        innerHTML: '^.' + board_id + '.' + list_id + '?list_name',
+        list_id: list_id,
+        connect_ondblclick: "var that=this; edit_list_name(that, event);",
+    });
+
+    var list_cards = list_div._('div', {
+        id: list_id,
+        nodeId: list_id,
+        _class: 'list-cards',
+        dropTarget: true, dropTypes:'*',
+        onDrop: function(dropInfo, data, _kwargs){
+            var domNode = dropInfo.domnode;
+            var card_pkey = data.card_pkey;
+            var src_list_pkey = data.src_list_pkey;
+            var dest_list_pkey = domNode.id;
+
+            var board_id = this.getRelativeData('board_id');
+            var board_store = this.getRelativeData('board.' + board_id);
+            
+            // Gets the card bag
+            card_bag = board_store.getItem(src_list_pkey + '.' + card_pkey);
+
+            // Remove the card from the previous list
+            board_store.delItem(src_list_pkey + '.' + card_pkey);
+
+            // Update the card bag with new infos
+            var list_name = board_store.getAttr(
+                dest_list_pkey, list_name)['list_name'];
+            card_bag.setItem('list_id', dest_list_pkey);
+            card_bag.setItem('list_name', list_name);
+
+            // Add the card to the new list
+            board_store.setItem(dest_list_pkey + '.' + card_pkey, card_bag);
+
+
+            // Appends to the current domNode (list) the dragged card
+            var card = document.getElementById(card_pkey);
+            // update the label as it was generated through datapath
+            var card_lbl = card.getElementsByClassName('list-card-label')[0];
+            card_lbl.innerText = card_bag.getItem('name');
+            domNode.appendChild(card);
+        }
+    });
+
+    list_div._('div', {
+        innerHTML: 'Add a card...',
+        list_id: list_id,
+        _class:'add-new-card',
+        connect_onclick: "var that=this; create_new_card(that);"
+    });
+
+    for (var c in cards){
+        create_card(list_cards, board_id, list_id, c);
+    }
+
 }
 
 
