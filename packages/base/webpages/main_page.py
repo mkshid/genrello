@@ -77,17 +77,28 @@ class GnrCustomWebPage(object):
     def get_lists_cards(self, board_id):
         """Gets a bag with lists and cards"""
 
+        tbl = self.db.table('base.list')
+        lists_qs = tbl.query(
+            where='$board_id=:board_id',
+            board_id=board_id,
+            order_by='$position'
+        ).fetch()
+
         tbl = self.db.table('base.card')
-        qs = tbl.query(
+        cards_qs = tbl.query(
             '$name,$description,$position,$list_name,$list_id',
             where='$list_board_id=:board_id',
             board_id=board_id,
             order_by='$position'
         ).fetch()
+
         result = Bag()
-        for r in qs:
-            result.setAttr(r['list_id'], list_name=r['list_name'])
-            result.setItem('{0}.{1}'.format(r['list_id'], r['pkey']), Bag(r))
+        for lst in lists_qs:
+            result.setItem(lst['id'], Bag(), list_name=lst['name'])
+
+        for crd in cards_qs:
+            result.setItem('{0}.{1}'.format(crd['list_id'], crd['pkey']), Bag(crd))
+
         return result
 
 
