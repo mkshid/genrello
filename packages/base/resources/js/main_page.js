@@ -178,9 +178,9 @@ function edit_list_name(that, event){
 }
 
 
-function create_list(board_node, board_id, list_id, cards){
+function create_list(node, board_id, list_id, cards){
 
-    var list_wrapper = board_node._('div', {_class:'list-wrapper'});
+    var list_wrapper = node._('div', {_class:'list-wrapper'});
 
     // name of the list
     var list_div = list_wrapper._('div', {_class: 'gen-list'});
