@@ -260,11 +260,12 @@ function add_new_list(that, event){
 
             // keyCode 13 is enter
             if(e.keyCode == 13) {
+                var board_id = this.getAttr('board_id');
 
                 // server call to save
                 var result = genro.serverCall(
                     'add_new_list',
-                    {board_id: this.getAttr('board_id'),
+                    {board_id: board_id,
                      value: this.domNode.value}
                 );
 
@@ -275,6 +276,15 @@ function add_new_list(that, event){
                          messageType:'error'});
 
                 } else {
+                    var list_id = result.getItem('id')
+                    var board_bag = that.getRelativeData('board.'+ board_id);
+
+                    board_bag.setItem(list_id, new gnr.GnrBag(),
+                                      {'list_name': result.getItem('name')});
+
+                    var board_node = that.nodeById('board_page');
+                    create_list(board_node, board_id, list_id, []);
+
                     genro.publish(
                         'floating_message',
                         {message: 'List saved!'});
