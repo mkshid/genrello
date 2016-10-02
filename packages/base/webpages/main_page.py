@@ -53,7 +53,10 @@ class GnrCustomWebPage(object):
 
     def board_page(self, pane):
         # Entry point of the board page.
-        pane.div(id='board_page', nodeId='board_page')
+        pane.div(
+            id='board_page', nodeId='board_page',
+            _class='board-page'
+        )
 
     @public_method
     def get_teams_boards(self):

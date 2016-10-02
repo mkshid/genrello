@@ -4,6 +4,10 @@
     position: relative;
 }
 
+.board-page {
+    display: inline-flex;
+}
+
 .board-list {
     display: -webkit-box;
     display: -webkit-flex;
