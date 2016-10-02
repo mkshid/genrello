@@ -33,14 +33,7 @@ function generate_board_page(that, board_id){
         create_list(bp_node, board_id, list_id, cards);
     }
 
-    var add_newlist_wrapper = bp_node._('div', {
-        _class: 'list-wrapper'
-    });
-    var new_list_div = add_newlist_wrapper._('div', {_class: 'add-new-list'});
-    new_list_div._('h3', {
-        innerHTML: 'Add new list',
-        connect_ondblclick: "var that=this; add_new_list(that, event);",
-    });
+    create_add_new_list_div(bp_node);
 
     // Once done with the rendering change the page
     that.setRelativeData('page_selected', 1);
@@ -284,6 +277,7 @@ function add_new_list(that, event){
 
                     var board_node = that.nodeById('board_page');
                     create_list(board_node, board_id, list_id, []);
+                    create_add_new_list_div(board_node);
 
                     genro.publish(
                         'floating_message',
@@ -294,6 +288,32 @@ function add_new_list(that, event){
                 domnode.innerText = this.getAttr('pre_edit_value');
             }
         }
+    });
+
+}
+
+function create_add_new_list_div(node) {
+    /* Creates the div/btn to create a new list
+
+       In case there is already a div/btn remove it and the create
+       it in the end of page.
+
+     */
+    // check if there is already this div there is remove it and create a new one
+    var new_list_div = document.getElementById('new_list_div')
+
+    if (new_list_div != null) {
+        new_list_div.remove();
+    }
+
+    var add_newlist_wrapper = node._('div', {
+        _class: 'list-wrapper', id: 'new_list_div',
+    });
+
+    var new_list_div = add_newlist_wrapper._('div', {_class: 'add-new-list'});
+    new_list_div._('h3', {
+        innerHTML: 'Add new list',
+        connect_ondblclick: "var that=this; add_new_list(that, event);",
     });
 
 }
