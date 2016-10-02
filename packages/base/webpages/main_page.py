@@ -53,7 +53,10 @@ class GnrCustomWebPage(object):
 
     def board_page(self, pane):
         # Entry point of the board page.
-        pane.div(id='board_page', nodeId='board_page')
+        pane.div(
+            id='board_page', nodeId='board_page',
+            _class='board-page'
+        )
 
     @public_method
     def get_teams_boards(self):
@@ -77,17 +80,28 @@ class GnrCustomWebPage(object):
     def get_lists_cards(self, board_id):
         """Gets a bag with lists and cards"""
 
+        tbl = self.db.table('base.list')
+        lists_qs = tbl.query(
+            where='$board_id=:board_id',
+            board_id=board_id,
+            order_by='$position'
+        ).fetch()
+
         tbl = self.db.table('base.card')
-        qs = tbl.query(
+        cards_qs = tbl.query(
             '$name,$description,$position,$list_name,$list_id',
             where='$list_board_id=:board_id',
             board_id=board_id,
             order_by='$position'
         ).fetch()
+
         result = Bag()
-        for r in qs:
-            result.setAttr(r['list_id'], list_name=r['list_name'])
-            result.setItem('{0}.{1}'.format(r['list_id'], r['pkey']), Bag(r))
+        for lst in lists_qs:
+            result.setItem(lst['id'], Bag(), list_name=lst['name'])
+
+        for crd in cards_qs:
+            result.setItem('{0}.{1}'.format(crd['list_id'], crd['pkey']), Bag(crd))
+
         return result
 
 
@@ -118,3 +132,18 @@ class GnrCustomWebPage(object):
                     'board_id': board_id})
         tbl.db.commit()
         return True
+
+    @public_method
+    def add_new_list(self, board_id, value):
+        """Add new list"""
+
+        value = value.strip()
+        if not value:
+            return False
+
+        tbl = self.db.table('base.list')
+        new_list = {'name': value,
+                    'board_id': board_id}
+        tbl.insert(new_list)
+        tbl.db.commit()
+        return Bag(new_list)
