@@ -9,7 +9,7 @@ function clean_up_board_page(that){
 }
 
 function generate_board_page(that, board_id){
-    /* Generate the board page */
+    /* Main function that generate the board page */
 
     // clean up the board page
     clean_up_board_page(that);
@@ -41,6 +41,12 @@ function generate_board_page(that, board_id){
 
 
 function create_card(list_cards_div, board_id, list_id, card_id){
+    /* Create a card
+
+       Add card to the list node passed
+       if the card_id is `tempcard` it's a tempcard
+
+     */
     var card = list_cards_div._('div', {
         id: card_id,
         _class: 'list-card', draggable: true,
@@ -61,7 +67,7 @@ function create_card(list_cards_div, board_id, list_id, card_id){
             board_id: board_id,
             list_id: list_id,
             _class: 'add-new-card-textarea',
-            connect_onkeyup: "var that=this; save_card_title(that, event);"
+            connect_onkeyup: "var that=this; save_card(that, event);"
         });
 
     }
@@ -69,7 +75,7 @@ function create_card(list_cards_div, board_id, list_id, card_id){
 
 
 function create_new_card(that){
-    /* Create a new card as temp */
+    /* Create a new card as `tempcard` */
 
     var list_id = that.getAttr('list_id');
     var board_id = that.getRelativeData('board_id')
@@ -85,7 +91,7 @@ function create_new_card(that){
 }
 
 
-function save_card_title(that, event){
+function save_card(that, event){
     /* Save the new card once enter is pressed  */
 
     var board_id = that.getRelativeData('board_id');
@@ -237,6 +243,8 @@ function create_list(node, board_id, list_id, cards){
 
 
 function add_new_list(that, event){
+    /* Add a new list  */
+
     var domnode = that.domNode;
     var pre_edit_value = domnode.innerText;
     var board_id = that.getRelativeData('board_id');
@@ -276,7 +284,12 @@ function add_new_list(that, event){
                                       {'list_name': result.getItem('name')});
 
                     var board_node = that.nodeById('board_page');
+
+                    // this call create a list without cards
                     create_list(board_node, board_id, list_id, []);
+
+                    // this call remove the new list dive and
+                    // recreate it to the end of board
                     create_add_new_list_div(board_node);
 
                     genro.publish(
