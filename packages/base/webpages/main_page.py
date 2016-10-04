@@ -21,6 +21,7 @@ class GnrCustomWebPage(object):
         sc.data('^page_selected', 0)
 
     def team_page(self, pane):
+        pane.attributes.update({'background_color': 'white'})
         qs =  self.get_teams_boards()
         pane.data('^team', qs)
 
