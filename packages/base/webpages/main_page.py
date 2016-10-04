@@ -52,6 +52,14 @@ class GnrCustomWebPage(object):
                     _class='board-tile'
                 )
 
+        team_div.li(
+            id='create_new_board',
+            _class='board-list-item',
+        ).div(
+            '!!+ Create new board...',
+            _class='board-tile create-new-board'
+        )
+
     def board_page(self, pane):
         # Entry point of the board page.
         pane.div(
