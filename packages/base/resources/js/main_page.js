@@ -1,21 +1,10 @@
-function clean_up_board_page(that){
-    var bp_div = document.getElementById('board_page');
-
-    // remove the child of the previous board
-    while(bp_div.hasChildNodes()){
-        var node = bp_div.firstChild;
-        bp_div.removeChild(node);
-    }
-}
-
 function generate_board_page(that, board_id){
     /* Main function that generate the board page */
 
-    // clean up the board page
-    clean_up_board_page(that);
-
     // Gets the node of board page
     var bp_node = that.nodeById('board_page');
+
+    bp_node.clearValue().freeze();
 
     // Make a serverCall to gets lists and cards related
     // to the board.
@@ -34,6 +23,8 @@ function generate_board_page(that, board_id){
     }
 
     create_add_new_list_div(bp_node);
+
+    bp_node.unfreeze();
 
     // Once done with the rendering change the page
     that.setRelativeData('page_selected', 1);
