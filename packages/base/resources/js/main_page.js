@@ -321,3 +321,55 @@ function create_add_new_list_div(node) {
     });
 
 }
+
+
+function create_new_board(that){
+
+
+    that.freeze();
+
+    var dlg = genro.dlg.quickDialog('Add Board');
+    var center = dlg.center;
+    var box = center._('div', {datapath:'new_board', padding:'20px'});
+    var fb = genro.dev.formbuilder(box, 1, {border_spacing:'6px'});
+
+    fb.addField('textBox', {
+        value:'^.name' ,
+        lbl: 'Title',
+        validate_notnull: true,
+        validate_notnull_error: _T('Mandatory field')
+    });
+
+    fb.addField('textArea', {
+        value: '^.description', lbl: 'Description'
+    });
+
+    fb.addField('dbselect', {
+        value: '^.team_id', lbl: 'Team',
+        dbtable:'base.team', hasDownArrow: true,
+        validate_notnull: true,
+        validate_notnull_error: _T('Mandatory field')
+    });
+
+    var bottom = dlg.bottom._('div');
+    var saveattr = {'float': 'right', label: _T('Create')};
+
+    saveattr.action = function() {
+        var result = genro.serverCall('add_board', {
+            name: this.getRelativeData('new_board.name'),
+            description: this.getRelativeData('new_board.description'),
+            team_id: this.getRelativeData('new_board.team_id')
+        });
+        if (result) {
+            genro.publish(
+                'floating_message',
+                {message: 'Board created!'});
+        }
+    };
+    bottom._('button', saveattr);
+    bottom._('button', {'float':'right',label:_T('Cancel'),action:dlg.close_action});
+
+    dlg.show_action();
+
+    that.unfreeze()
+}
