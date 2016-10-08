@@ -14,15 +14,16 @@ class GnrCustomWebPage(object):
         frame = root.framePane()
         sc = frame.center.stackContainer(selected='^page_selected')
 
-        self.team_page(sc.contentPane(title='!!Teams', datapath='team'))
+        self.team_page(sc.contentPane(title='!!Teams', datapath='teams'))
         self.board_page(sc.contentPane(title='!!Board', datapath='board'))
 
         frame.top.slotToolbar('*,stackButtons,*', _class='page_slotbar')
         sc.data('^page_selected', 0)
 
     def team_page(self, pane):
+        pane.attributes.update({'background_color': 'white'})
         qs =  self.get_teams_boards()
-        pane.data('^team', qs)
+        pane.data('^teams', qs)
 
         for r in qs:
             team_id = r.getLabel()
@@ -30,7 +31,7 @@ class GnrCustomWebPage(object):
             team_div = pane.div(
                 '^.{0}?team_name'.format(team_id),
                 _class='team-title'
-            ).ul(_class='board-list')
+            ).ul(_class='board-list', nodeId=team_id, id=team_id)
 
             for v in values:
                 board_id = v.getValue().getItem('pkey')
@@ -39,17 +40,23 @@ class GnrCustomWebPage(object):
                     board_id=board_id ,
                     _class='board-list-item',
                     connect_onclick="""
-                       var board_id = this.getAttr('board_id')
-                       this.setRelativeData('board_id', board_id);
-                       var that = this;
-
                        // call a function to generate the board page
-                       generate_board_page(that, board_id);
+                       generate_board_page(this);
                     """,
                 ).div(
                     '^.{0}.{1}.name'.format(team_id, board_id),
                     _class='board-tile'
                 )
+
+        # Button to create a new board
+        team_div.li(
+            id='create_new_board',
+            _class='board-list-item',
+            connect_onclick="create_new_board(this);"
+        ).div(
+            '!!+ Create new board...',
+            _class='board-tile create-new-board'
+        )
 
     def board_page(self, pane):
         # Entry point of the board page.
@@ -57,7 +64,6 @@ class GnrCustomWebPage(object):
             id='board_page', nodeId='board_page',
             _class='board-page'
         )
-
     @public_method
     def get_teams_boards(self):
         """Gets a bag with team and boards"""
@@ -147,3 +153,21 @@ class GnrCustomWebPage(object):
         tbl.insert(new_list)
         tbl.db.commit()
         return Bag(new_list)
+
+
+    @public_method
+    def add_board(self, name, description, position, team_id):
+        """Add a new board"""
+
+        values = {
+            'name': name,
+            'description': description,
+            'position': position,
+            'team_id': team_id,
+            'owner_user_id': self.dbCurrentEnv()['user_id']
+        }
+        tbl = self.db.table('base.board')
+        tbl.insert(values)
+        tbl.db.commit()
+
+        return Bag(values)

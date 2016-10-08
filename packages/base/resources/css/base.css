@@ -41,6 +41,11 @@
     text-decoration: none;
     min-height: 60px;
 }
+
+.board-tile.create-new-board {
+    background-color: #dad8d8;
+}
+
 .board-tile:hover {
     cursor: pointer;
     opacity: 0.8;
