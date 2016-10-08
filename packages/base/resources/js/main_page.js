@@ -400,7 +400,7 @@ function create_board_div(that, values) {
     var team_id = values.getItem('team_id');
     var board_id = values.getItem('id');
     var node = genro.nodeById(team_id);
-    that.setRelativeData('team.' + team_id + '.' + board_id, values);
+    that.setRelativeData('teams.' + team_id + '.' + board_id, values);
 
     node._('li', {
         board_id: board_id, _class: 'board-list-item',

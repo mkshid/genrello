@@ -14,7 +14,7 @@ class GnrCustomWebPage(object):
         frame = root.framePane()
         sc = frame.center.stackContainer(selected='^page_selected')
 
-        self.team_page(sc.contentPane(title='!!Teams', datapath='team'))
+        self.team_page(sc.contentPane(title='!!Teams', datapath='teams'))
         self.board_page(sc.contentPane(title='!!Board', datapath='board'))
 
         frame.top.slotToolbar('*,stackButtons,*', _class='page_slotbar')
@@ -23,7 +23,7 @@ class GnrCustomWebPage(object):
     def team_page(self, pane):
         pane.attributes.update({'background_color': 'white'})
         qs =  self.get_teams_boards()
-        pane.data('^team', qs)
+        pane.data('^teams', qs)
 
         for r in qs:
             team_id = r.getLabel()
