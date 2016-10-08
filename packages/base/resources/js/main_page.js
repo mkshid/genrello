@@ -363,10 +363,14 @@ function create_new_board(that){
         action: function() {
             var dlg = this.getAttr('dlg');
 
+            var team_id = this.getRelativeData('new_board.team_id');
+            var team_boards_nums = this.getRelativeData('teams.' + team_id).len();
+
             var result = genro.serverCall('add_board', {
                 name: this.getRelativeData('new_board.name'),
                 description: this.getRelativeData('new_board.description'),
-                team_id: this.getRelativeData('new_board.team_id')
+                position: team_boards_nums++,
+                team_id: team_id
             });
             if (result) {
                 genro.publish(
