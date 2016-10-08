@@ -31,7 +31,7 @@ class GnrCustomWebPage(object):
             team_div = pane.div(
                 '^.{0}?team_name'.format(team_id),
                 _class='team-title'
-            ).ul(_class='board-list')
+            ).ul(_class='board-list', nodeId=team_id, id=team_id)
 
             for v in values:
                 board_id = v.getValue().getItem('pkey')
@@ -40,12 +40,8 @@ class GnrCustomWebPage(object):
                     board_id=board_id ,
                     _class='board-list-item',
                     connect_onclick="""
-                       var board_id = this.getAttr('board_id')
-                       this.setRelativeData('board_id', board_id);
-                       var that = this;
-
                        // call a function to generate the board page
-                       generate_board_page(that, board_id);
+                       generate_board_page(this);
                     """,
                 ).div(
                     '^.{0}.{1}.name'.format(team_id, board_id),
@@ -56,7 +52,7 @@ class GnrCustomWebPage(object):
         team_div.li(
             id='create_new_board',
             _class='board-list-item',
-            connect_onclick="""create_new_board(this);"""
+            connect_onclick="create_new_board(this);"
         ).div(
             '!!+ Create new board...',
             _class='board-tile create-new-board'

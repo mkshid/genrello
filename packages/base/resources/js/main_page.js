@@ -1,5 +1,10 @@
-function generate_board_page(that, board_id){
+function generate_board_page(that){
     /* Main function that generate the board page */
+
+
+    var board_id = that.getAttr('board_id')
+    // Set opened board_id in the store
+    that.setRelativeData('board_id', board_id);
 
     // Gets the node of board page
     var bp_node = that.nodeById('board_page');
@@ -324,7 +329,7 @@ function create_add_new_list_div(node) {
 
 
 function create_new_board(that){
-
+    /* Create a new board */
 
     that.freeze();
 
@@ -352,24 +357,71 @@ function create_new_board(that){
     });
 
     var bottom = dlg.bottom._('div');
-    var saveattr = {'float': 'right', label: _T('Create')};
+    var saveattr = {
+        'float': 'right', label: _T('Create'),
+        dlg: dlg,
+        action: function() {
+            var dlg = this.getAttr('dlg');
 
-    saveattr.action = function() {
-        var result = genro.serverCall('add_board', {
-            name: this.getRelativeData('new_board.name'),
-            description: this.getRelativeData('new_board.description'),
-            team_id: this.getRelativeData('new_board.team_id')
-        });
-        if (result) {
-            genro.publish(
-                'floating_message',
-                {message: 'Board created!'});
-        }
-    };
+            var result = genro.serverCall('add_board', {
+                name: this.getRelativeData('new_board.name'),
+                description: this.getRelativeData('new_board.description'),
+                team_id: this.getRelativeData('new_board.team_id')
+            });
+            if (result) {
+                genro.publish(
+                    'floating_message',
+                    {message: 'Board created!'});
+
+                create_board_div(this, result);
+
+                dlg.close_action();
+            }
+
+        }};
+
     bottom._('button', saveattr);
-    bottom._('button', {'float':'right',label:_T('Cancel'),action:dlg.close_action});
+    bottom._('button', {
+        'float':'right', label:_T('Cancel'),
+        action:dlg.close_action
+    });
 
     dlg.show_action();
 
     that.unfreeze()
+}
+
+function create_board_div(that, values) {
+
+    var create_new_board = document.getElementById('create_new_board');
+    if (create_new_board){
+        create_new_board.remove()
+    }
+    var team_id = values.getItem('team_id');
+    var board_id = values.getItem('id');
+    var node = genro.nodeById(team_id);
+    that.setRelativeData('team.' + team_id + '.' + board_id, values);
+
+    node._('li', {
+        board_id: board_id, _class: 'board-list-item',
+        connect_onclick: "generate_board_page(this)",
+    })._('div', {value:'^.' + team_id + '.' + board_id + '.name',
+                 innerHTML: values.getItem('name'),
+                 _class: 'board-tile'});
+
+    create_new_board_btn(node);
+
+}
+
+
+function create_new_board_btn (node) {
+
+    node._('li', {
+        id: 'create_new_board',
+        _class: 'board-list-item',
+        connect_onclick:"create_new_board(this);"
+    })._('div', {
+        innerHTML: _T('+ Create new board...'),
+        _class: 'board-tile create-new-board'
+    });
 }
