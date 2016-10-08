@@ -52,9 +52,11 @@ class GnrCustomWebPage(object):
                     _class='board-tile'
                 )
 
+        # Button to create a new board
         team_div.li(
             id='create_new_board',
             _class='board-list-item',
+            connect_onclick="""create_new_board(this);"""
         ).div(
             '!!+ Create new board...',
             _class='board-tile create-new-board'
@@ -66,7 +68,6 @@ class GnrCustomWebPage(object):
             id='board_page', nodeId='board_page',
             _class='board-page'
         )
-
     @public_method
     def get_teams_boards(self):
         """Gets a bag with team and boards"""
@@ -156,3 +157,18 @@ class GnrCustomWebPage(object):
         tbl.insert(new_list)
         tbl.db.commit()
         return Bag(new_list)
+
+
+    @public_method
+    def add_board(self, name, description, team_id):
+        values = {
+            'name': name,
+            'description': description,
+            'team_id': team_id,
+            'owner_user_id': self.dbCurrentEnv()['user_id']
+        }
+        tbl = self.db.table('base.board')
+        tbl.insert(values)
+        tbl.db.commit()
+
+        return Bag(values)
