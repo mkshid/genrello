@@ -21,7 +21,10 @@ class GnrCustomWebPage(object):
         sc.data('^page_selected', 0)
 
     def team_page(self, pane):
-        pane.attributes.update({'background_color': 'white'})
+        pane.attributes.update({'background_color': 'white',
+                                'nodeId': 'team_page',
+                                'id': 'team_page'})
+
         qs =  self.get_teams_boards()
         pane.data('^teams', qs)
 
@@ -185,6 +188,19 @@ class GnrCustomWebPage(object):
             'owner_user_id': self.dbCurrentEnv()['user_id']
         }
         tbl = self.db.table('base.board')
+        tbl.insert(values)
+        tbl.db.commit()
+
+        return Bag(values)
+
+    @public_method
+    def add_team(self, name, description):
+        values = {
+            'name': name,
+            'description': description,
+            'owner_user_id': self.dbCurrentEnv()['user_id']
+        }
+        tbl = self.db.table('base.team')
         tbl.insert(values)
         tbl.db.commit()
 
