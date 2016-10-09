@@ -364,7 +364,9 @@ function create_new_board(that){
             var dlg = this.getAttr('dlg');
 
             var team_id = this.getRelativeData('new_board.team_id');
-            var team_boards_nums = this.getRelativeData('teams.' + team_id).len();
+
+            var team_boards_nums = this.getRelativeData('teams.' + team_id);
+            team_boards_nums = team_boards_nums?team_boards_nums.len():0;
 
             var result = genro.serverCall('add_board', {
                 name: this.getRelativeData('new_board.name'),
@@ -408,7 +410,7 @@ function create_board_div(that, values) {
     var node = genro.nodeById(team_id);
     that.setRelativeData('teams.' + team_id + '.' + board_id, values);
 
-    node._('li', {
+    node._('div', {
         board_id: board_id, _class: 'board-list-item',
         connect_onclick: "generate_board_page(this)",
     })._('div', {value:'^.' + team_id + '.' + board_id + '.name',
@@ -422,7 +424,7 @@ function create_board_div(that, values) {
 
 function create_new_board_btn (node, team_id) {
 
-    node._('li', {
+    node._('div', {
         id: 'create_new_board_' + team_id,
         _class: 'board-list-item',
         connect_onclick:"create_new_board(this);"
@@ -515,12 +517,13 @@ function create_team_div(that, values) {
         {team_name: team_name}
     );
 
-    var team_title = node._('div', {
+    var team_div = node._('div')
+    var team_title = team_div._('div', {
         innerHTML: team_name,
         _class: 'team-title'
     });
-    var board = team_title._(
-        'ul', {_class: 'board-list', nodeId: team_id, id: team_id});
+    var board = team_div._('div')._(
+        'div', {_class: 'board-list', nodeId: team_id, id: team_id});
 
     create_new_board_btn(board, team_id);
     create_new_team_btn(node);

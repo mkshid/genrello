@@ -31,16 +31,21 @@ class GnrCustomWebPage(object):
         for r in qs:
             team_id = r.getLabel()
             values = r.getValue()
-            team_div = pane.div(
+
+            team_div = pane.div()
+            team_div.div(
                 '^.{0}?team_name'.format(team_id),
                 _class='team-title'
-            ).ul(_class='board-list', nodeId=team_id, id=team_id)
+            )
+
+            board_div = team_div.div(
+            ).div(_class='board-list', nodeId=team_id, id=team_id)
 
             if values:
                 for v in values:
                     board_id = v.getValue().getItem('pkey')
                     # Set the board_id as attribute so i can use to his list etc..
-                    team_div.li(
+                    board_div.div(
                         board_id=board_id ,
                         _class='board-list-item',
                         connect_onclick="""
@@ -53,7 +58,7 @@ class GnrCustomWebPage(object):
                     )
 
             # Button to create a new board
-            team_div.li(
+            board_div.div(
                 id='create_new_board_' + team_id,
                 _class='board-list-item',
                 connect_onclick="create_new_board(this);"
