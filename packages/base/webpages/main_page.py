@@ -33,30 +33,36 @@ class GnrCustomWebPage(object):
                 _class='team-title'
             ).ul(_class='board-list', nodeId=team_id, id=team_id)
 
-            for v in values:
-                board_id = v.getValue().getItem('pkey')
-                # Set the board_id as attribute so i can use to his list etc..
-                team_div.li(
-                    board_id=board_id ,
-                    _class='board-list-item',
-                    connect_onclick="""
-                       // call a function to generate the board page
-                       generate_board_page(this);
-                    """,
-                ).div(
-                    '^.{0}.{1}.name'.format(team_id, board_id),
-                    _class='board-tile'
-                )
+            if values:
+                for v in values:
+                    board_id = v.getValue().getItem('pkey')
+                    # Set the board_id as attribute so i can use to his list etc..
+                    team_div.li(
+                        board_id=board_id ,
+                        _class='board-list-item',
+                        connect_onclick="""
+                        // call a function to generate the board page
+                        generate_board_page(this);
+                        """,
+                    ).div(
+                        '^.{0}.{1}.name'.format(team_id, board_id),
+                        _class='board-tile'
+                    )
 
-        # Button to create a new board
-        team_div.li(
-            id='create_new_board',
-            _class='board-list-item',
-            connect_onclick="create_new_board(this);"
-        ).div(
-            '!!+ Create new board...',
-            _class='board-tile create-new-board'
-        )
+            # Button to create a new board
+            team_div.li(
+                id='create_new_board_' + team_id,
+                _class='board-list-item',
+                connect_onclick="create_new_board(this);"
+            ).div(
+                '!!+ Create new board...',
+                _class='board-tile create-new-board'
+            )
+
+        pane.div(
+            id='create_new_team', _class='team-title',
+            connect_onclick="create_new_team(this);"
+        ).div('!!Add new team')
 
     def board_page(self, pane):
         # Entry point of the board page.
@@ -68,18 +74,30 @@ class GnrCustomWebPage(object):
     def get_teams_boards(self):
         """Gets a bag with team and boards"""
 
-        tbl = self.db.table('base.board')
-        qs = tbl.query(
-            '$name,$team_id,$team_name,$position',
+        user_id = self.dbCurrentEnv()['user_id']
+
+        tbl = self.db.table('base.team')
+        teams_qs = tbl.query(
             where='$owner_user_id=:user_id',
-            user_id=self.dbCurrentEnv()['user_id'],
+            user_id=user_id,
+            order_by='$__ins_ts'
+        ).fetch()
+
+        tbl = self.db.table('base.board')
+        boards_qs = tbl.query(
+            '$name,$team_id',
+            where='$owner_user_id=:user_id',
+            user_id=user_id,
             order_by='$position'
         ).fetch()
 
         result = Bag()
-        for r in qs:
-            result.setAttr(r['team_id'], team_name=r['team_name'])
-            result.setItem('{0}.{1}'.format(r['team_id'], r['pkey']), Bag(r))
+        for t in teams_qs:
+            result.setAttr(t['id'], team_name=t['name'])
+
+        for b in boards_qs:
+            result.setItem('{0}.{1}'.format(b['team_id'], b['pkey']), Bag(b))
+
         return result
 
     @public_method
