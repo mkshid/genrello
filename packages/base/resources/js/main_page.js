@@ -517,12 +517,12 @@ function create_team_div(that, values) {
         {team_name: team_name}
     );
 
-    var team_div = node._('div')
+    var team_div = node._('div', {_class: 'team-div'});
     var team_title = team_div._('div', {
         innerHTML: team_name,
         _class: 'team-title'
     });
-    var board = team_div._('div')._(
+    var board = team_div._('div', {_class: 'team-boards-div'})._(
         'div', {_class: 'board-list', nodeId: team_id, id: team_id});
 
     create_new_board_btn(board, team_id);
@@ -533,9 +533,9 @@ function create_team_div(that, values) {
 
 function create_new_team_btn (node) {
 
-    node._('div', {
+    node._('div', {_class: 'team-div'})._('div', {
         id: 'create_new_team',
-        _class: 'team-title',
+        _class: 'add-new-team-btn',
         connect_onclick:"create_new_team(this);"
     })._('div', {
         innerHTML: _T('Add new team...'),

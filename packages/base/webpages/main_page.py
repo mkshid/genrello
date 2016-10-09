@@ -32,13 +32,13 @@ class GnrCustomWebPage(object):
             team_id = r.getLabel()
             values = r.getValue()
 
-            team_div = pane.div()
+            team_div = pane.div(_class='team-div')
             team_div.div(
                 '^.{0}?team_name'.format(team_id),
                 _class='team-title'
             )
 
-            board_div = team_div.div(
+            board_div = team_div.div(_class='team-boards-div'
             ).div(_class='board-list', nodeId=team_id, id=team_id)
 
             if values:
@@ -67,8 +67,8 @@ class GnrCustomWebPage(object):
                 _class='board-tile create-new-board'
             )
 
-        pane.div(
-            id='create_new_team', _class='team-title',
+        pane.div(_class='team-div').div(
+            id='create_new_team', _class='add-new-team-btn',
             connect_onclick="create_new_team(this);"
         ).div('!!Add new team')
 
