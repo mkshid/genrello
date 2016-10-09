@@ -15,7 +15,7 @@ class GnrCustomWebPage(object):
         sc = frame.center.stackContainer(selected='^page_selected')
 
         self.team_page(sc.contentPane(title='!!Teams', datapath='teams'))
-        self.board_page(sc.contentPane(title='!!Board', datapath='board'))
+        self.board_page(sc.contentPane(datapath='board'))
 
         frame.top.slotToolbar('*,stackButtons,*', _class='page_slotbar')
         sc.data('^page_selected', 0)
