@@ -1,5 +1,8 @@
-.team-title {
+.team-div {
     margin: 0 0 0 38px;
+}
+
+.team-title {
     padding: 0 0 11px;
     position: relative;
 }
@@ -201,4 +204,17 @@
     width: 100%;
     font-weight: bold;
     font-size: 14px;
+}
+
+
+.add-new-team-btn {
+    padding: 0 0 8px;
+    position: relative;
+    width: 100px;
+}
+
+.add-new-team-btn:hover{
+    cursor: pointer;
+    color: rgb(0, 121, 191);
+    text-decoration: underline;
 }
