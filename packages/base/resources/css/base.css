@@ -218,3 +218,13 @@
     color: rgb(0, 121, 191);
     text-decoration: underline;
 }
+
+.show-card {
+    margin-top: 10px;
+}
+.show-card > .dijitDialogPaneContent{
+    background-color: whitesmoke !important;
+}
+.show-card > .dijitDialogTitleBar {
+    display: none;
+}
