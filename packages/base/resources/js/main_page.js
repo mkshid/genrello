@@ -45,7 +45,11 @@ function create_card(list_cards_div, board_id, list_id, card_id){
      */
     var card = list_cards_div._('div', {
         id: card_id,
-        _class: 'list-card', draggable: true,
+        list_id: list_id,
+        board_id: board_id,
+        _class: 'list-card',
+        connect_onclick: "show_card_details(this);",
+        draggable: true,
         onDrag: function(dragValues, dragInfo, treeItem){
             var domNode = dragInfo.domnode;
             dragValues['card_pkey'] = domNode.id;
@@ -68,6 +72,49 @@ function create_card(list_cards_div, board_id, list_id, card_id){
 
     }
 }
+
+function show_card_details(that) {
+    var card_id = that.getAttr('id');
+    var list_id = that.getAttr('list_id');
+    var board_id = that.getAttr('board_id');
+    var card_dpath = '^board.' + board_id + '.' + list_id + '.' + card_id;
+    
+
+    var qd_width = screen.availWidth / 3 + 'px';
+    var qd_height = screen.availHeight + 'px';
+
+
+    var dlg = genro.dlg.quickDialog(
+        card_dpath + '.name', {
+            width: qd_width, height: qd_height,
+            _class: 'show-card'
+        }
+    );
+
+    var center = dlg.center;
+    var box = center._('div', {
+        padding:'10px',
+    });
+
+    var title_bar = box._('div', {display: 'flex'})
+
+    title_bar._('h2', {
+        innerHTML: card_dpath + '.name', margin_top: '0px',
+        width: '100%'});
+
+    title_bar._('span', {
+        innerHTML: 'X',
+        'float':'right',
+        connect_onclick:dlg.close_action
+    });
+
+    box._('h6', {innerHTML: card_dpath + '.list_name'});
+    box._('h4', {innerHTML: card_dpath + '.descritpion'});
+
+
+    dlg.show_action();
+}
+
 
 
 function create_new_card(that){
