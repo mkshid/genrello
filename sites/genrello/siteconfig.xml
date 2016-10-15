@@ -7,6 +7,6 @@
 	<connection_refresh/>
 
 	<dojo version="11"/>
-    <gui css_theme='modren'/>
+    <gui css_theme='genrello_theme'/>
 
 </GenRoBag>

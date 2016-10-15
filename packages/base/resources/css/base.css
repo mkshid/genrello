@@ -220,11 +220,15 @@
 }
 
 .show-card {
-    margin-top: 10px;
+
 }
 .show-card > .dijitDialogPaneContent{
     background-color: whitesmoke !important;
 }
 .show-card > .dijitDialogTitleBar {
     display: none;
+}
+.show-card-close {
+    float: right;
+    cursor: pointer;
 }

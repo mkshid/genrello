@@ -102,9 +102,8 @@ function show_card_details(that) {
         innerHTML: card_dpath + '.name', margin_top: '0px',
         width: '100%'});
 
-    title_bar._('span', {
-        innerHTML: 'X',
-        'float':'right',
+    title_bar._('i', {
+        _class: 'fa fa-times show-card-close',
         connect_onclick:dlg.close_action
     });
 
