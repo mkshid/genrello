@@ -228,3 +228,7 @@
 .show-card > .dijitDialogTitleBar {
     display: none;
 }
+.show-card-close {
+    float: right;
+    cursor: pointer;
+}

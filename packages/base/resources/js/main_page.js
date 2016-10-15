@@ -103,8 +103,7 @@ function show_card_details(that) {
         width: '100%'});
 
     title_bar._('i', {
-        _class: 'fa fa-times',
-        'float':'right',
+        _class: 'fa fa-times show-card-close',
         connect_onclick:dlg.close_action
     });
 
