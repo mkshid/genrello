@@ -108,8 +108,24 @@ function show_card_details(that) {
     });
 
     box._('h6', {innerHTML: card_dpath + '.list_name'});
-    box._('h4', {innerHTML: card_dpath + '.descritpion'});
 
+    var description = that.getRelativeData(card_dpath + '.description');
+
+    if (description){
+        box._('p', {
+            innerHTML: card_dpath + '.description',
+            card_dpath: card_dpath,
+            connect_onclick: "edit_card_description(this);",
+            _class: 'edit-card-description'
+        });
+    } else {
+        box._('p', {
+            innerHTML: 'Edit card description',
+            card_dpath: card_dpath,
+            connect_onclick: "edit_card_description(this);",
+            _class: 'edit-card-description'
+        });
+    }
 
     dlg.show_action();
 }
@@ -165,6 +181,39 @@ function save_card(that, event){
         document.getElementById('tempcard').remove();
     }
 }
+function edit_card_description(that, event){
+
+    var domnode = that.domNode;
+    var pre_editclass = domnode.className;
+    var pre_edit_value = domnode.innerText;
+    var list_id = that.getAttr('list_id');
+    var board_id = that.getRelativeData('board_id');
+    var card_dpath = that.getAttr('card_dpath');
+
+    domnode.innerText = '';
+    domnode.className = '';
+
+    var card_edit_div = that._('div');
+    card_edit_div._('TextArea', {
+        innerHTML: card_dpath + '.description',
+        _class: 'edit-card-description-textarea',
+        connect_onclick: function(e){
+            e.stopPropagation();
+        }
+    });
+
+    var edit_control_div = card_edit_div._(
+        'div', {_class: 'edit-card-description-control'});
+    edit_control_div._('div', {
+        innerHTML: 'Save',
+        _class: 'save-card-description'
+    });
+    edit_control_div._('div', {
+        _class: 'fa fa-times'
+    });
+
+}
+
 
 function edit_list_name(that, event){
    /* Edit list name and save it on enter */
