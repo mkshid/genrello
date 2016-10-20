@@ -115,6 +115,7 @@ function show_card_details(that) {
         box._('p', {
             innerHTML: card_dpath + '.description',
             card_dpath: card_dpath,
+            card_id: card_id,
             connect_onclick: "edit_card_description(this);",
             _class: 'edit-card-description'
         });
@@ -122,6 +123,7 @@ function show_card_details(that) {
         box._('p', {
             innerHTML: 'Edit card description',
             card_dpath: card_dpath,
+            card_id: card_id,
             connect_onclick: "edit_card_description(this);",
             _class: 'edit-card-description'
         });
@@ -187,26 +189,52 @@ function edit_card_description(that, event){
     var pre_editclass = domnode.className;
     var pre_edit_value = domnode.innerText;
     var list_id = that.getAttr('list_id');
+    var card_id = that.getAttr('card_id');
     var board_id = that.getRelativeData('board_id');
     var card_dpath = that.getAttr('card_dpath');
 
     domnode.innerText = '';
     domnode.className = '';
 
-    var card_edit_div = that._('div');
-    card_edit_div._('TextArea', {
+    var card_edit_div = that._(
+        'div', {
+            connect_onclick: function(e){
+                e.stopPropagation();
+            }
+        }
+    );
+    var textarea_wdg = card_edit_div._('TextArea', {
         innerHTML: card_dpath + '.description',
         _class: 'edit-card-description-textarea',
-        connect_onclick: function(e){
-            e.stopPropagation();
-        }
     });
-
     var edit_control_div = card_edit_div._(
         'div', {_class: 'edit-card-description-control'});
+
     edit_control_div._('div', {
         innerHTML: 'Save',
-        _class: 'save-card-description'
+        card_id: card_id,
+        card_dpath: card_dpath,
+        textarea_node: textarea_wdg.getNode(),
+        _class: 'save-card-description',
+        connect_onclick: function(e){
+            var card_id = this.getAttr('card_id');
+            var textarea_node = this.getAttr('textarea_node');
+            var descr = textarea_node.domNode.value;
+
+            var result = genro.serverCall(
+                'update_card_description',
+                {
+                    card_id: card_id,
+                    description: descr
+                }
+            );
+            if (result){
+                genro.publish(
+                    'floating_message',
+                    {message: 'Card description saved!'});
+                this.setRelativeData(card_dpath + '.description', descr);
+            }
+        }
     });
     edit_control_div._('div', {
         _class: 'fa fa-times'
