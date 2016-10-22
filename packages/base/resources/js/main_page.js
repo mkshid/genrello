@@ -108,8 +108,26 @@ function show_card_details(that) {
     });
 
     box._('h6', {innerHTML: card_dpath + '.list_name'});
-    box._('h4', {innerHTML: card_dpath + '.descritpion'});
 
+    var description = that.getRelativeData(card_dpath + '.description');
+
+    if (description){
+        box._('p', {
+            innerHTML: card_dpath + '.description',
+            card_dpath: card_dpath,
+            card_id: card_id,
+            connect_onclick: "edit_card_description(this);",
+            _class: 'edit-card-description'
+        });
+    } else {
+        box._('p', {
+            innerHTML: 'Edit card description',
+            card_dpath: card_dpath,
+            card_id: card_id,
+            connect_onclick: "edit_card_description(this);",
+            _class: 'edit-card-description'
+        });
+    }
 
     dlg.show_action();
 }
@@ -165,6 +183,96 @@ function save_card(that, event){
         document.getElementById('tempcard').remove();
     }
 }
+function edit_card_description(that, event){
+
+    var domnode = that.domNode;
+    var pre_editclass = domnode.className;
+    var pre_edit_value = domnode.innerText;
+    var list_id = that.getAttr('list_id');
+    var card_id = that.getAttr('card_id');
+    var board_id = that.getRelativeData('board_id');
+    var card_dpath = that.getAttr('card_dpath');
+
+    domnode.innerText = '';
+    domnode.className = '';
+
+    function remove_edit_wdg(edit_wdg_node, descr_node,
+                             value, sty_class) {
+
+        edit_wdg_node.getParentNode().destroy();
+        descr_node.innerHTML = value;
+        descr_node.className = sty_class;
+    }
+
+    var card_edit_div = that._(
+        'div', {
+            connect_onclick: function(e){
+                e.stopPropagation();
+            }
+        }
+    );
+    var textarea_wdg = card_edit_div._('TextArea', {
+        innerHTML: card_dpath + '.description',
+        _class: 'edit-card-description-textarea',
+    });
+    var edit_control_div = card_edit_div._(
+        'div', {_class: 'edit-card-description-control'});
+
+    edit_control_div._('div', {
+        innerHTML: 'Save',
+        card_id: card_id,
+        card_dpath: card_dpath,
+        textarea_node: textarea_wdg.getNode(),
+        descr_domnode: domnode,
+        pre_editclass: pre_editclass,
+        _class: 'save-card-description',
+        connect_onclick: function(e){
+            var card_id = this.getAttr('card_id');
+            var textarea_node = this.getAttr('textarea_node');
+            var descr = textarea_node.domNode.value;
+
+            var descr_domnode = this.getAttr('descr_domnode');
+            var pre_editclass = this.getAttr('pre_editclass');
+
+            var result = genro.serverCall(
+                'update_card_description',
+                {
+                    card_id: card_id,
+                    description: descr
+                }
+            );
+            if (result){
+                genro.publish(
+                    'floating_message',
+                    {message: 'Card description saved!'});
+                this.setRelativeData(card_dpath + '.description', descr);
+
+                remove_edit_wdg(textarea_node, descr_domnode,
+                                descr, pre_editclass);
+
+            }
+        }
+    });
+
+    edit_control_div._('div', {
+        _class: 'fa fa-times cancel-card-description',
+        textarea_node: textarea_wdg.getNode(),
+        descr_domnode: domnode,
+        pre_editclass: pre_editclass,
+        pre_edit_value: pre_edit_value,
+        connect_onclick: function(e){
+            var attrs = this.getAttr();
+            remove_edit_wdg(
+                attrs.textarea_node, attrs.descr_domnode,
+                attrs.pre_edit_value, attrs.pre_editclass
+            );
+        }
+    });
+
+
+
+}
+
 
 function edit_list_name(that, event){
    /* Edit list name and save it on enter */

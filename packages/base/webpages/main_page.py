@@ -152,6 +152,18 @@ class GnrCustomWebPage(object):
 
 
     @public_method
+    def update_card_description(self, card_id, description):
+        """Add/Update the description of a card"""
+
+        tbl = self.db.table('base.card')
+        tbl.update({
+            'id': card_id,
+            'description': description
+        })
+        tbl.db.commit()
+        return True
+
+    @public_method
     def edit_list_name(self, list_id, board_id, value):
         """Save name of a list after the field has been edited"""
 
