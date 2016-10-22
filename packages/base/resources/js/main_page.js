@@ -196,6 +196,14 @@ function edit_card_description(that, event){
     domnode.innerText = '';
     domnode.className = '';
 
+    function remove_edit_wdg(edit_wdg_node, descr_node,
+                             value, sty_class) {
+
+        edit_wdg_node.getParentNode().destroy();
+        descr_node.innerHTML = value;
+        descr_node.className = sty_class;
+    }
+
     var card_edit_div = that._(
         'div', {
             connect_onclick: function(e){
@@ -215,11 +223,16 @@ function edit_card_description(that, event){
         card_id: card_id,
         card_dpath: card_dpath,
         textarea_node: textarea_wdg.getNode(),
+        descr_domnode: domnode,
+        pre_editclass: pre_editclass,
         _class: 'save-card-description',
         connect_onclick: function(e){
             var card_id = this.getAttr('card_id');
             var textarea_node = this.getAttr('textarea_node');
             var descr = textarea_node.domNode.value;
+
+            var descr_domnode = this.getAttr('descr_domnode');
+            var pre_editclass = this.getAttr('pre_editclass');
 
             var result = genro.serverCall(
                 'update_card_description',
@@ -233,12 +246,30 @@ function edit_card_description(that, event){
                     'floating_message',
                     {message: 'Card description saved!'});
                 this.setRelativeData(card_dpath + '.description', descr);
+
+                remove_edit_wdg(textarea_node, descr_domnode,
+                                descr, pre_editclass);
+
             }
         }
     });
+
     edit_control_div._('div', {
-        _class: 'fa fa-times'
+        _class: 'fa fa-times',
+        textarea_node: textarea_wdg.getNode(),
+        descr_domnode: domnode,
+        pre_editclass: pre_editclass,
+        pre_edit_value: pre_edit_value,
+        connect_onclick: function(e){
+            var attrs = this.getAttr();
+            remove_edit_wdg(
+                attrs.textarea_node, attrs.descr_domnode,
+                attrs.pre_edit_value, attrs.pre_editclass
+            );
+        }
     });
+
+
 
 }
 
