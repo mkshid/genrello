@@ -255,7 +255,7 @@ function edit_card_description(that, event){
     });
 
     edit_control_div._('div', {
-        _class: 'fa fa-times',
+        _class: 'fa fa-times cancel-card-description',
         textarea_node: textarea_wdg.getNode(),
         descr_domnode: domnode,
         pre_editclass: pre_editclass,
