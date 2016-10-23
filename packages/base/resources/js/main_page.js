@@ -145,18 +145,18 @@ function create_new_card(that){
     that.domNode.className = '';
 
     var edit_control_div = that._(
-        'div', {_class: 'edit-card-description-control'});
+        'div', {_class: 'edit-div-controls new-card'});
 
     edit_control_div._('div', {
         innerHTML: 'Save',
-        _class: 'save-card-description',
+        _class: 'save-btn',
         list_id: list_id,
         board_id: board_id,
         connect_onclick: 'save_card(this, event);'
     });
 
     edit_control_div._('div', {
-        _class: 'fa fa-times cancel-card-description',
+        _class: 'fa fa-times cancel-btn',
         edit_control_node: edit_control_div.getNode(),
         list_id: list_id,
         board_id: board_id,
@@ -267,7 +267,7 @@ function edit_card_description(that, event){
         _class: 'edit-card-description-textarea',
     });
     var edit_control_div = card_edit_div._(
-        'div', {_class: 'edit-card-description-control'});
+        'div', {_class: 'edit-div-controls'});
 
     edit_control_div._('div', {
         innerHTML: 'Save',
@@ -276,7 +276,7 @@ function edit_card_description(that, event){
         textarea_node: textarea_wdg.getNode(),
         descr_domnode: domnode,
         pre_editclass: pre_editclass,
-        _class: 'save-card-description',
+        _class: 'save-btn',
         connect_onclick: function(e){
             var card_id = this.getAttr('card_id');
             var textarea_node = this.getAttr('textarea_node');
@@ -306,7 +306,7 @@ function edit_card_description(that, event){
     });
 
     edit_control_div._('div', {
-        _class: 'fa fa-times cancel-card-description',
+        _class: 'fa fa-times cancel-btn',
         textarea_node: textarea_wdg.getNode(),
         descr_domnode: domnode,
         pre_editclass: pre_editclass,
