@@ -8,7 +8,7 @@ from gnr.core.gnrdecorator import public_method
 class GnrCustomWebPage(object):
 
     css_requires = 'css/base'
-    js_requires = 'js/main_page'
+    js_requires = 'js/team,js/board,js/list,js/card'
 
     def main(self, root, **kwargs):
         frame = root.framePane()
