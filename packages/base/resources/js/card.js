@@ -29,6 +29,9 @@ function create_card(list_cards_div, board_id, list_id, card_id){
             board_id: board_id,
             list_id: list_id,
             _class: 'add-new-card-textarea',
+            connect_onclick: function(e){
+                e.stopPropagation();
+            }
         });
     }
 }
