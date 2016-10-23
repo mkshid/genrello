@@ -59,7 +59,9 @@ function show_card_details(that) {
         padding:'10px',
     });
 
-    var title_bar = box._('div', {display: 'flex'})
+    var header_div = box._('div', {_class: 'card-header'})
+
+    var title_bar = header_div._('div', {display: 'flex'})
 
     title_bar._('h2', {
         innerHTML: card_dpath + '.name', margin_top: '0px',
@@ -70,7 +72,11 @@ function show_card_details(that) {
         connect_onclick:dlg.close_action
     });
 
-    box._('h6', {innerHTML: card_dpath + '.list_name'});
+    var list_name_div = header_div._('div')
+    var list_name = that.getRelativeData(card_dpath + '.list_name');
+
+    list_name_div._('p', {innerHTML: 'in list ( ' + list_name + ' )',
+                          color: '#c6c7c7'});
 
     var description = that.getRelativeData(card_dpath + '.description');
 

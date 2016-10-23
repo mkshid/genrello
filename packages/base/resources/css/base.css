@@ -3,8 +3,10 @@
 }
 
 .team-title {
-    padding: 0 0 11px;
+    padding: 20px 0 11px 0;
     position: relative;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .board-page {
@@ -278,7 +280,6 @@
     padding-top: 10px;
     border-radius: 3px;
     cursor: pointer;
-
 }
 
 .cancel-btn {
@@ -290,4 +291,8 @@
 .cancel-btn:hover {
     cursor: pointer;
     color: #5a5d5d;
+}
+
+.card-header {
+    margin-bottom: 20px;
 }

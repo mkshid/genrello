@@ -10,6 +10,8 @@ class GnrCustomWebPage(object):
     css_requires = 'css/base'
     js_requires = 'js/team,js/board,js/list,js/card'
 
+    auth_main = 'admin,user'
+
     def main(self, root, **kwargs):
         frame = root.framePane()
         sc = frame.center.stackContainer(selected='^page_selected')
