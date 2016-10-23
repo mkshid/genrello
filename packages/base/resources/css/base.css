@@ -260,11 +260,15 @@
     color: #4d4d4d;
 }
 
-.edit-card-description-control {
+.edit-div-controls {
     display: inline-flex;
 }
 
-.save-card-description {
+.edit-div-controls.new-card{
+    margin: 0 0 10px 8px;
+}
+
+.save-btn {
     background: linear-gradient(to bottom,#61BD4F 0,#5AAC44 100%);
     box-shadow: 0 1px 0 #3F6F21;
     color: #fff;
@@ -274,13 +278,16 @@
     padding-top: 10px;
     border-radius: 3px;
     cursor: pointer;
+
 }
-.cancel-card-description {
+
+.cancel-btn {
+    color: #c6c7c7;
     font-size: 26px !important;
     margin: 6px 0 0 18px;
-    color: #c6c7c7;
 }
-.cancel-card-description:hover {
+
+.cancel-btn:hover {
     cursor: pointer;
     color: #5a5d5d;
 }
