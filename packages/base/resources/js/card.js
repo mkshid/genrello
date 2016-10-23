@@ -59,7 +59,7 @@ function show_card_details(that) {
         padding:'10px',
     });
 
-    var header_div = box._('div')
+    var header_div = box._('div', {_class: 'card-header'})
 
     var title_bar = header_div._('div', {display: 'flex'})
 
