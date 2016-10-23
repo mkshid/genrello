@@ -3,8 +3,10 @@
 }
 
 .team-title {
-    padding: 0 0 11px;
+    padding: 20px 0 11px 0;
     position: relative;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .board-page {
