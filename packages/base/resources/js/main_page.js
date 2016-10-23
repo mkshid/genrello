@@ -56,7 +56,7 @@ function create_card(list_cards_div, board_id, list_id, card_id){
             dragValues['src_list_pkey'] = domNode.parentNode.id;
         }
     });
-    if (card_id != 'tempcard'){
+    if (card_id != list_id + '-tempcard'){
         card._('div', {
             innerHTML: '^.' + board_id + '.' + list_id + '.' + card_id + '.name',
             _class: 'list-card-label'
@@ -67,9 +67,7 @@ function create_card(list_cards_div, board_id, list_id, card_id){
             board_id: board_id,
             list_id: list_id,
             _class: 'add-new-card-textarea',
-            connect_onkeyup: "var that=this; save_card(that, event);"
         });
-
     }
 }
 
@@ -137,7 +135,58 @@ function show_card_details(that) {
 function create_new_card(that){
     /* Create a new card as `tempcard` */
 
-    var list_id = that.getAttr('list_id');
+    event.stopPropagation();
+
+    attrs = that.getAttr()
+    var list_id = attrs.list_id;
+    var board_id = that.getRelativeData('board_id')
+
+    that.domNode.innerHTML = '';
+    that.domNode.className = '';
+
+    var edit_control_div = that._(
+        'div', {_class: 'edit-card-description-control'});
+
+    edit_control_div._('div', {
+        innerHTML: 'Save',
+        _class: 'save-card-description',
+        list_id: list_id,
+        board_id: board_id,
+        connect_onclick: 'save_card(this, event);'
+    });
+
+    edit_control_div._('div', {
+        _class: 'fa fa-times cancel-card-description',
+        edit_control_node: edit_control_div.getNode(),
+        list_id: list_id,
+        board_id: board_id,
+        connect_onclick: function(e){
+
+            e.stopPropagation();
+            var attrs = this.getAttr()
+            var node = attrs.edit_control_node;
+            var list_id = attrs.list_id;
+            var board_id = attrs.board_id;
+
+            var parent_node = node.getParentNode();
+
+            node.destroy();
+
+            document.getElementById(list_id + '-tempcard').remove();
+            // set the tempcard in store to null
+            that.setRelativeData('board.' + board_id + '.' + list_id + '.tempcard', null);
+
+            parent_node._('div', {
+                innerHTML:'Add a card...',
+                _class: 'add-new-card',
+                list_id: list_id
+            });
+
+        }
+
+    });
+
+
     var board_id = that.getRelativeData('board_id')
     var list_cards_div = genro.nodeById(list_id);
     var card_creating = that.getRelativeData(
@@ -146,7 +195,7 @@ function create_new_card(that){
 
     if (card_creating == null){
         that.setRelativeData('board.' + board_id + '.' + list_id + '.tempcard', true);
-        create_card(list_cards_div, board_id, list_id, 'tempcard');
+        create_card(list_cards_div, board_id, list_id, list_id + '-tempcard');
     }
 }
 
@@ -156,33 +205,35 @@ function save_card(that, event){
 
     var board_id = that.getRelativeData('board_id');
     var list_id = that.getAttr('list_id');
-    if (event.keyCode == 13){
-        // In case of enter save the card
-        var card = genro.serverCall('save_card', {
-            list_id: list_id,
-            card_name: that.domNode.value
-        });
 
-        var card_id = card.getItem('id');
-        // Sets the saved card in store
-        that.setRelativeData(
-            'board.' + board_id + '.' + list_id + '.' + card_id,
-            card
-        );
+    var tempcard_div = document.getElementById(list_id + '-tempcard');
 
-        var list_cards_div = genro.nodeById(list_id);
-        // remove the temp  card
-        document.getElementById('tempcard').remove();
-        // set the tempcard in store to null
-        that.setRelativeData('board.' + board_id + '.' + list_id + '.tempcard', null);
-        // create the new saved card
-        create_card(list_cards_div, board_id, list_id, card_id);
+    // In this case the firstChild is the textarea of tempcard
+    var value = tempcard_div.firstChild.value;
 
-    } else if (event.keyCode == 27){
-        // In case of esc remove the card div
-        document.getElementById('tempcard').remove();
-    }
+    // In case of enter save the card
+    var card = genro.serverCall('save_card', {
+        list_id: list_id,
+        card_name: value
+    });
+
+    var card_id = card.getItem('id');
+    // Sets the saved card in store
+    that.setRelativeData(
+        'board.' + board_id + '.' + list_id + '.' + card_id,
+        card
+    );
+
+    var list_cards_div = genro.nodeById(list_id);
+    // remove the temp  card
+    document.getElementById(list_id + '-tempcard').remove();
+    // set the tempcard in store to null
+    that.setRelativeData('board.' + board_id + '.' + list_id + '.tempcard', null);
+    // create the new saved card
+    create_card(list_cards_div, board_id, list_id, card_id);
+
 }
+
 function edit_card_description(that, event){
 
     var domnode = that.domNode;
@@ -382,7 +433,7 @@ function create_list(node, board_id, list_id, cards){
         innerHTML: 'Add a card...',
         list_id: list_id,
         _class:'add-new-card',
-        connect_onclick: "var that=this; create_new_card(that);"
+        connect_onclick: "create_new_card(this, event);"
     });
 
     for (var c in cards){
