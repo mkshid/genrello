@@ -116,8 +116,25 @@ function show_card_details(that) {
         }});
 
     var comments_ctrls = comments_div._('div', {_class: 'comment-controls'})
-    comments_ctrls._('div', {innerHTML: 'Send', _class:'disabled-btn',
-                             nodeId:'comment_send_btn'});
+    comments_ctrls._('div', {
+        innerHTML: 'Send', _class:'disabled-btn',
+        card_dpath: card_dpath,
+        card_id: card_id,
+        nodeId:'comment_send_btn',
+        connect_onclick: function(e){
+            var attrs = this.getAttr();
+            var value = this.getRelativeData(attrs.card_dpath + '.new_comment');
+            var result = genro.serverCall(
+                'save_comment',
+                {
+                    card_id: attrs.card_id,
+                    value: value
+                });
+            if (result){
+                this.setRelativeData(attrs.card_dpath + '.new_comment', '');
+            }
+        }
+    });
 
     dlg.show_action();
 }

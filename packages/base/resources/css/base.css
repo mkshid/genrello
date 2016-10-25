@@ -298,6 +298,7 @@
     color: #8c8c8c;
     cursor: default;
     font-weight: 400;
+    pointer-events: none;
 }
 
 .cancel-btn {

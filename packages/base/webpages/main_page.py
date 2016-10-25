@@ -152,6 +152,19 @@ class GnrCustomWebPage(object):
         tbl.db.commit()
         return Bag(card)
 
+    @public_method
+    def save_comment(self, card_id, value):
+        user_id = self.dbCurrentEnv()['user_id']
+        tbl = self.db.table('base.comment')
+        comment = {
+            'comment': value,
+            'card_id': card_id,
+            'owner_user_id': user_id
+        }
+        tbl.insert(comment)
+        tbl.db.commit()
+
+        return True
 
     @public_method
     def update_card_description(self, card_id, description):
