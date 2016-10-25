@@ -98,6 +98,27 @@ function show_card_details(that) {
         });
     }
 
+    // Add comment div
+    var comments_div = box._('div', {_class:'add-comment-div'});
+    comments_div._('h3', {innerHTML: 'Add Comment'});
+    var comments_box = comments_div._('div', {_class: 'editing-box'})
+    comments_box._('textArea', {
+        value: card_dpath + '.new_comment',
+        placeholder:'Write a comment...',
+        connect_onkeyup: function(e){
+            // Sets the right css on the `Send` btn
+            var node = genro.nodeById('comment_send_btn');
+            if(this.domNode.value.length > 0 ){
+                node.updAttributes({_class:'save-btn'})
+            } else {
+                node.updAttributes({_class:'disabled-btn'})
+            }
+        }});
+
+    var comments_ctrls = comments_div._('div', {_class: 'comment-controls'})
+    comments_ctrls._('div', {innerHTML: 'Send', _class:'disabled-btn',
+                             nodeId:'comment_send_btn'});
+
     dlg.show_action();
 }
 
