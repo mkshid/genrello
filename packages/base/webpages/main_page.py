@@ -161,10 +161,13 @@ class GnrCustomWebPage(object):
             'card_id': card_id,
             'owner_user_id': user_id
         }
-        tbl.insert(comment)
-        tbl.db.commit()
+        try:
+            tbl.insert(comment)
+            tbl.db.commit()
+            return Bag(comment)
+        except Exception:
+            return None
 
-        return True
 
     @public_method
     def update_card_description(self, card_id, description):
