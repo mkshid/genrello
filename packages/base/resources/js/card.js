@@ -55,9 +55,7 @@ function show_card_details(that) {
     );
 
     var center = dlg.center;
-    var box = center._('div', {
-        padding:'10px',
-    });
+    var box = center._('div', {padding:'10px'});
 
     var header_div = box._('div', {_class: 'card-header'})
 
@@ -136,10 +134,53 @@ function show_card_details(that) {
         }
     });
 
+    var comments = genro.serverCall('get_card_comments', {
+        card_id: card_id,
+    });
+
+    that.setRelativeData(card_dpath + '.comments', comments);
+
+    var activity_div = box._('div', {_class:'card-activity'});
+
+    activity_div._('span', {innerHTML:'Activity', _class:'card-activity-title'})
+
+    var prev_comments_list = activity_div._('div');
+
+    var comments = comments.asDict(true);
+
+    for (cm in comments){
+        var c_dpath = card_dpath + '.comments.' + cm;
+        create_prev_comment_card(prev_comments_list, c_dpath);
+    }
+
     dlg.show_action();
 }
 
+function create_prev_comment_card(node, dpath){
 
+    var prev_comment_div = node._('div', {
+        _class: 'card-prev-comment'
+    });
+
+    prev_comment_div._('span')._('span', {
+        innerHTML: dpath + '.username',
+        _class: 'card-prev-commenter'
+    });
+
+    var prev_comment_container = prev_comment_div._('div', {
+        _class: 'prev-comment-container'
+    })._('div', {padding:'9px 11px'});
+
+    prev_comment_container._('p', {
+        innerHTML: dpath + '.comment'
+    });
+
+    prev_comment_div._('span', {
+        innerHTML: dpath + '.__ins_ts',
+        font_size: '75%'
+    });
+
+}
 
 function create_new_card(that){
     /* Create a new card as `tempcard` */
