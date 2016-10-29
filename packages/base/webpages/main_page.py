@@ -142,8 +142,10 @@ class GnrCustomWebPage(object):
     def get_card_comments(self, card_id):
         tbl = self.db.table('base.comment')
         comments_qs = tbl.query(
+            '$comment,$__ins_ts,$__mod_ts,$username',
             where='card_id=:card_id',
-            card_id=card_id
+            card_id=card_id,
+            order_by='$__ins_ts DESC'
         ).fetch()
         result = Bag()
         for cm in comments_qs:

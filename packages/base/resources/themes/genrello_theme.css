@@ -1,5 +1,9 @@
 
-
+.dijitDialogPaneContent {
+    font-size: 12px;
+    padding: 0px;
+    overflow: auto !important;
+}
 
 /*!
  *  Font Awesome 4.6.3 by @davegandy - http://fontawesome.io - @fontawesome
