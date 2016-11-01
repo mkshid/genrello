@@ -144,7 +144,10 @@ function show_card_details(that) {
 
     activity_div._('span', {innerHTML:'Activity', _class:'card-activity-title'})
 
-    var prev_comments_list = activity_div._('div');
+    var prev_comments_list = activity_div._(
+        'div', {
+            nodeId: 'prev-comments-node',
+        });
 
     var comments = comments.asDict(true);
 
