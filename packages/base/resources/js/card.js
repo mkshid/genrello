@@ -111,7 +111,12 @@ function show_card_details(that) {
             } else {
                 node.updAttributes({_class:'disabled-btn'})
             }
-        }});
+        },
+        connect_onmouseout: function(e){
+            // Lose focus from the textarea on mouseout
+            this.domNode.blur();
+        }
+    });
 
     var comments_ctrls = comments_div._('div', {_class: 'comment-controls'})
     comments_ctrls._('div', {
