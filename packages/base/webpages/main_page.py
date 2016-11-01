@@ -183,8 +183,8 @@ class GnrCustomWebPage(object):
             tbl.db.commit()
             comment['username'] = username
             return Bag(comment)
-        except Exception:
-            return None
+        except Exception as e:
+            raise e
 
 
     @public_method
