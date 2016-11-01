@@ -102,6 +102,7 @@ function show_card_details(that) {
     var comments_box = comments_div._('div', {_class: 'editing-box'})
     comments_box._('textArea', {
         value: card_dpath + '.new_comment',
+        nodeId: 'comment_textarea',
         placeholder:'Write a comment...',
         connect_onkeyup: function(e){
             // Sets the right css on the `Send` btn
