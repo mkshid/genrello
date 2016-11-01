@@ -180,6 +180,7 @@ function create_prev_comment_card(node, dpath){
         font_size: '75%'
     });
 
+    return prev_comment_div
 }
 
 function create_new_card(that){
