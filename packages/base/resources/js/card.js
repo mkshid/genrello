@@ -135,7 +135,27 @@ function show_card_details(that) {
                     value: value
                 });
             if (result){
+                // Re add the disabled-btn class on Send button
+                this.updAttributes({_class: 'disabled-btn'});
+
                 this.setRelativeData(attrs.card_dpath + '.new_comment', '');
+                var comment_id = result.getItem('id');
+                var c_dpath = attrs.card_dpath + '.comments.' + comment_id;
+
+                // Set the saved comment the datastore
+                this.setRelativeData(c_dpath, result);
+
+                // Create a tempnode where create the comment div
+                genro.src.getNode()._('div', comment_id);
+                var tmpnode = genro.src.getNode(comment_id).clearValue();
+                var new_cmt_div = create_prev_comment_card(tmpnode, c_dpath);
+                var new_cmt_node = new_cmt_div.getNode().domNode;
+
+                // Gets div where previous comments are saved
+                var node = genro.nodeById('prev-comments-node').domNode;
+
+                // Add the new node as first child of previous comments
+                node.insertBefore(new_cmt_node, node.childNodes[0]);
             }
         }
     });
