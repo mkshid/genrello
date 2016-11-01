@@ -102,6 +102,7 @@ function show_card_details(that) {
     var comments_box = comments_div._('div', {_class: 'editing-box'})
     comments_box._('textArea', {
         value: card_dpath + '.new_comment',
+        nodeId: 'comment_textarea',
         placeholder:'Write a comment...',
         connect_onkeyup: function(e){
             // Sets the right css on the `Send` btn
@@ -111,7 +112,12 @@ function show_card_details(that) {
             } else {
                 node.updAttributes({_class:'disabled-btn'})
             }
-        }});
+        },
+        connect_onmouseout: function(e){
+            // Lose focus from the textarea on mouseout
+            this.domNode.blur();
+        }
+    });
 
     var comments_ctrls = comments_div._('div', {_class: 'comment-controls'})
     comments_ctrls._('div', {
@@ -129,7 +135,27 @@ function show_card_details(that) {
                     value: value
                 });
             if (result){
+                // Re add the disabled-btn class on Send button
+                this.updAttributes({_class: 'disabled-btn'});
+
                 this.setRelativeData(attrs.card_dpath + '.new_comment', '');
+                var comment_id = result.getItem('id');
+                var c_dpath = attrs.card_dpath + '.comments.' + comment_id;
+
+                // Set the saved comment the datastore
+                this.setRelativeData(c_dpath, result);
+
+                // Create a tempnode where create the comment div
+                genro.src.getNode()._('div', comment_id);
+                var tmpnode = genro.src.getNode(comment_id).clearValue();
+                var new_cmt_div = create_prev_comment_card(tmpnode, c_dpath);
+                var new_cmt_node = new_cmt_div.getNode().domNode;
+
+                // Gets div where previous comments are saved
+                var node = genro.nodeById('prev-comments-node').domNode;
+
+                // Add the new node as first child of previous comments
+                node.insertBefore(new_cmt_node, node.childNodes[0]);
             }
         }
     });
@@ -144,7 +170,10 @@ function show_card_details(that) {
 
     activity_div._('span', {innerHTML:'Activity', _class:'card-activity-title'})
 
-    var prev_comments_list = activity_div._('div');
+    var prev_comments_list = activity_div._(
+        'div', {
+            nodeId: 'prev-comments-node',
+        });
 
     var comments = comments.asDict(true);
 
@@ -180,6 +209,7 @@ function create_prev_comment_card(node, dpath){
         font_size: '75%'
     });
 
+    return prev_comment_div
 }
 
 function create_new_card(that){
