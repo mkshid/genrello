@@ -170,6 +170,8 @@ class GnrCustomWebPage(object):
     @public_method
     def save_comment(self, card_id, value):
         user_id = self.dbCurrentEnv()['user_id']
+        username = self.dbCurrentEnv()['user']
+
         tbl = self.db.table('base.comment')
         comment = {
             'comment': value,
@@ -179,6 +181,7 @@ class GnrCustomWebPage(object):
         try:
             tbl.insert(comment)
             tbl.db.commit()
+            comment['username'] = username
             return Bag(comment)
         except Exception:
             return None
