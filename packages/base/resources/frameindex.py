@@ -12,6 +12,18 @@ class GenrelloFrameIndex(BaseComponent):
 
 
     def prepareTop(self,pane,onCreatingTablist=None):
+        pane.dataController(
+            """
+            var kw = {file: 'main_page',
+                     fullpath: 'gnr.appmenu.root.mainmenu.mm_main_page',
+                     label: 'Homepage',
+                     url: '/main_page'};
+            kw.openKw = {topic: 'main_page_load'};
+            genro.mainGenroWindow.genro.publish('selectIframePage',kw);
+            """,
+            _onStart=True
+        )
+
         pane.attributes.update(dict(
             height='30px', overflow='hidden',
             _class='framedindex_tablist', drawer='close'
@@ -33,3 +45,6 @@ class GenrelloFrameIndex(BaseComponent):
             bc.contentPane(region='center'),
             onCreatingTablist=onCreatingTablist
         )
+
+    def prepareBottom(self, pane):
+        pass
