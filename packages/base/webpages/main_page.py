@@ -19,7 +19,12 @@ class GnrCustomWebPage(object):
         self.team_page(sc.contentPane(title='!!Teams', datapath='teams'))
         self.board_page(sc.contentPane(datapath='board'))
 
-        frame.top.slotToolbar('*,stackButtons,*', _class='page_slotbar')
+        top = frame.top.slotToolbar('stackButtons,*,logout', _class='page_slotbar')
+        top.logout.div(
+        connect_onclick="genro.mainGenroWindow.genro.logout()",
+        _class='iconbox icnBaseUserLogout',
+        tip='!!Logout'
+        )
         sc.data('^page_selected', 0)
 
     def team_page(self, pane):
@@ -76,6 +81,8 @@ class GnrCustomWebPage(object):
 
     def board_page(self, pane):
         # Entry point of the board page.
+        pane.attributes.update({'background_color': 'rgb(0, 121, 191)'})
+
         pane.div(
             id='board_page', nodeId='board_page',
             _class='board-page'
