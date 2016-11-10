@@ -19,7 +19,11 @@ class GnrCustomWebPage(object):
         self.team_page(sc.contentPane(title='!!Teams', datapath='teams'))
         self.board_page(sc.contentPane(datapath='board'))
 
-        top = frame.top.slotToolbar('stackButtons,*,logout', _class='page_slotbar')
+        top = frame.top.slotToolbar('8,home,*,logout', _class='page-slotbar')
+        top.home.i(
+            _class='fa fa-home home-icon',
+            connect_onclick="this.setRelativeData('page_selected', 0);"
+        )
         top.logout.div(
         connect_onclick="genro.mainGenroWindow.genro.logout()",
         _class='iconbox icnBaseUserLogout',
