@@ -9,8 +9,46 @@
     font-weight: bold;
 }
 
+.page-slotbar {
+    border: 0;
+    background-color: #0c5986 !important;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 90%, from(#0c5986), to(#0c5986));
+    background-image: -moz-linear-gradient(-90deg, #0c5986, #0c5986);
+    padding:0;
+    box-shadow: 0 1px 1px rgba(0,0,0,.1);
+    z-index: 10;
+    height: 30px;
+}
+
+.home-icon {
+    font-size: 30px !important;
+    color: white;
+}
+.home-icon:hover {
+    color: #0079bf;
+    cursor: pointer;
+}
+
+.board-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    margin: 10px;
+}
+
 .board-page {
+    user-select: none;
+    white-space: nowrap;
+    margin-bottom: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 10px;
+    position: absolute;
     display: inline-flex;
+    /* The top 30px depends from the page_slotbar */
+    top: 30px;
+    bottom: 0;
+    left: 0;
 }
 
 .board-list {

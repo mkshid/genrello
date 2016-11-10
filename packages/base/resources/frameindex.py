@@ -24,10 +24,17 @@ class GenrelloFrameIndex(BaseComponent):
             _onStart=True
         )
 
-        pane.attributes.update(dict(
-            height='30px', overflow='hidden',
-            _class='framedindex_tablist', drawer='close'
-        ))
+        if '_DEV_' in self.userTags or 'admin' in self.userTags:
+            frameindex_attrs = dict(
+                height='30px', overflow='hidden',
+                _class='framedindex_tablist',
+                drawer='close'
+            )
+        else:
+            # Hide the bar in case of normal user
+            frameindex_attrs['display'] = 'none'
+
+        pane.attributes.update(frameindex_attrs)
 
         bc = pane.borderContainer(margin_top='4px') 
         leftbar = bc.contentPane(
