@@ -7,6 +7,12 @@ function generate_board_page(that){
     that.setRelativeData('board_id', board_id);
 
     // Gets the node of board page
+    var bh_node = that.nodeById('board_header');
+
+    bh_node._('div', {innerHTML:that.getAttr('board_name'),
+                      _class: 'board-name'})
+
+    // Gets the node of board page
     var bp_node = that.nodeById('board_page');
 
     bp_node.clearValue().freeze();

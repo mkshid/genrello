@@ -58,6 +58,7 @@ class GnrCustomWebPage(object):
                     # Set the board_id as attribute so i can use to his list etc..
                     board_div.div(
                         board_id=board_id ,
+                        board_name=v.getValue().getItem('name'),
                         _class='board-list-item',
                         connect_onclick="""
                         // call a function to generate the board page
@@ -86,6 +87,11 @@ class GnrCustomWebPage(object):
     def board_page(self, pane):
         # Entry point of the board page.
         pane.attributes.update({'background_color': 'rgb(0, 121, 191)'})
+
+        pane.div(
+            id='board_header', nodeId='board_header',
+            _class='board-header'
+        )
 
         pane.div(
             id='board_page', nodeId='board_page',
