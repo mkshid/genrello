@@ -10,7 +10,17 @@
 }
 
 .board-page {
+    user-select: none;
+    white-space: nowrap;
+    margin-bottom: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 10px;
+    position: absolute;
     display: inline-flex;
+    top: 0;
+    bottom: 0;
+    left: 0;
 }
 
 .board-list {
