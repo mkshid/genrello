@@ -24,13 +24,14 @@ class GenrelloFrameIndex(BaseComponent):
             _onStart=True
         )
 
-        if '_DEV_' in self.userTags or 'admin' in self.userTags:
-            frameindex_attrs = dict(
-                height='30px', overflow='hidden',
-                _class='framedindex_tablist',
-                drawer='close'
-            )
-        else:
+        frameindex_attrs = dict(
+            height='30px', overflow='hidden',
+            _class='framedindex_tablist',
+            drawer='close'
+        )
+
+
+        if '_DEV_' not in self.userTags and 'admin' not in self.userTags:
             # Hide the bar in case of normal user
             frameindex_attrs['display'] = 'none'
 
