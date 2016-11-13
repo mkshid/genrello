@@ -16,3 +16,4 @@ def config(root, application=None):
     developer = root.branch("!!Developer", tags='admin')
     developer.branch("Amministrazione", tags="admin", pkg="adm")
     developer.branch("Sistema", tags="admin", pkg="sys")
+    developer.thpage("Utils", file='utils_page', tags="admin")
