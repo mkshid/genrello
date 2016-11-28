@@ -8,7 +8,7 @@ function generate_board_page(that){
 
     // Gets the node of board page
     var bh_node = that.nodeById('board_header');
-
+    bh_node.clearValue().fre
     bh_node._('div', {innerHTML:that.getAttr('board_name'),
                       _class: 'board-name'})
 
@@ -36,6 +36,7 @@ function generate_board_page(that){
     create_add_new_list_div(bp_node);
 
     bp_node.unfreeze();
+    bh_node.unfreeze();
 
     // Once done with the rendering change the page
     that.setRelativeData('page_selected', 1);
