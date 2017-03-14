@@ -8,7 +8,7 @@ function generate_board_page(that){
 
     // Gets the node of board page
     var bh_node = that.nodeById('board_header');
-    bh_node.clearValue().fre
+    bh_node.clearValue().freeze();
     bh_node._('div', {innerHTML:that.getAttr('board_name'),
                       _class: 'board-name'})
 
