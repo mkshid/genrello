@@ -230,6 +230,20 @@ class GnrCustomWebPage(object):
         tbl.db.commit()
         return True
 
+
+    @public_method
+    def delete_list(self, list_id):
+        """Delete list"""
+
+        tbl = self.db.table('base.list')
+        try:
+            tbl.delete({'id': list_id})
+            tbl.db.commit()
+            return True
+        except Exception as e:
+            print e
+            return False
+
     @public_method
     def add_new_list(self, board_id, value):
         """Add new list"""

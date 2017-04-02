@@ -10,4 +10,5 @@ _static
 # genropy project files
 sites/genrello/data/
 sites/genrello/uploaded_files/
+.DS_Store
 

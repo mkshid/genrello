@@ -53,14 +53,24 @@ function edit_list_name(that, event){
 
 function create_list(node, board_id, list_id, cards){
 
-    var list_wrapper = node._('div', {_class:'list-wrapper'});
+    var list_wrapper = node._('div', {
+        _class:'list-wrapper', id: list_id
+    });
 
     // name of the list
     var list_div = list_wrapper._('div', {_class: 'gen-list'});
-    list_div._('h3', {
+    var list_header = list_div._('div', {_class: 'list-header'});
+
+    list_header._('p', {
         innerHTML: '^.' + board_id + '.' + list_id + '?list_name',
         list_id: list_id,
         connect_ondblclick: "var that=this; edit_list_name(that, event);",
+    });
+
+    list_header._('i', {
+        _class: 'fa fa-trash-o',
+        list_id: list_id,
+        connect_onclick: "delete_list(this)"
     });
 
     var list_cards = list_div._('div', {
@@ -194,7 +204,7 @@ function create_add_new_list_div(node) {
     }
 
     var add_newlist_wrapper = node._('div', {
-        _class: 'list-wrapper', id: 'new_list_div',
+        _cloass: 'list-wrapper', id: 'new_list_div',
     });
 
     var new_list_div = add_newlist_wrapper._('div', {_class: 'add-new-list'});
@@ -203,4 +213,31 @@ function create_add_new_list_div(node) {
         connect_ondblclick: "var that=this; add_new_list(that, event);",
     });
 
+}
+
+
+function delete_list(that){
+
+    var dlg = genro.dlg.ask(
+        _T('Delete List'),
+        _T("Are you sure?"),{
+            confirm:_T('Delete'), cancel:_T('Cancel')},
+        {confirm:function(){delete_listCb();}})
+
+    var delete_listCb = function(){
+        var list_id = that.getAttr('list_id');
+
+        var result = genro.serverCall(
+            'delete_list',
+            {list_id: list_id}
+        );
+
+        if (result == true){
+            genro.publish(
+                'floating_message',
+                {message: 'List Removed!'}
+            );
+            document.getElementById(list_id).remove();
+        }
+    }
 }

@@ -327,7 +327,7 @@ function edit_card_description(that, event){
     domnode.innerText = '';
     domnode.className = '';
 
-    function remove_edit_wdg(edit_wdg_node, descr_node,
+    var remove_edit_wdg = function (edit_wdg_node, descr_node,
                              value, sty_class) {
 
         edit_wdg_node.getParentNode().destroy();
@@ -376,11 +376,9 @@ function edit_card_description(that, event){
                 genro.publish(
                     'floating_message',
                     {message: 'Card description saved!'});
-                this.setRelativeData(card_dpath + '.description', descr);
 
                 remove_edit_wdg(textarea_node, descr_domnode,
                                 descr, pre_editclass);
-
             }
         }
     });

@@ -65,7 +65,10 @@ function create_new_board(that){
 
     fb.addField('dbselect', {
         value: '^.team_id', lbl: 'Team',
-        dbtable:'base.team', hasDownArrow: true,
+        dbtable:'base.team',
+        condition: '$owner_user_id = :curr_user',
+        condition_curr_user: '^server.dbEnv.user_id',
+        hasDownArrow: true,
         validate_notnull: true,
         validate_notnull_error: _T('Mandatory field')
     });
