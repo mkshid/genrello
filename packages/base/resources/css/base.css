@@ -251,6 +251,8 @@
     position: relative;
     white-space: normal;
     cursor: pointer;
+    margin: 10px;
+    width: 270px;
 }
 
 .add-new-list:hover{
