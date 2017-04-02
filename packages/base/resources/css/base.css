@@ -29,8 +29,12 @@
     cursor: pointer;
 }
 
+.board-header {
+    padding-left: 10px;
+}
+
 .board-name {
-    font-size: 16px;
+    font-size: 19px;
     font-weight: bold;
     color: white;
     margin: 10px;
@@ -46,9 +50,9 @@
     position: absolute;
     display: inline-flex;
     /* The top 30px depends from the page_slotbar */
-    top: 30px;
+    top: 40px;
     bottom: 0;
-    left: 0;
+    left: 10px;
 }
 
 .board-list {
@@ -125,7 +129,7 @@
 }
 
 .gen-list h3 {
-    padding: 0 20px 10px 20px;
+    padding: 0 20px 10px 10px;
 }
 
 .list-cards {
