@@ -128,9 +128,30 @@
     white-space: normal;
 }
 
-.gen-list h3 {
-    padding: 0 20px 10px 10px;
+.list-header {
+    display: inline-flex;
+    padding-top: 20px;
 }
+
+.list-header p {
+    padding: 0 0 10px 10px;
+    width: 88%;
+    font-weight: bold;
+    font-size: 15px;
+    color: #403b3b;
+}
+
+.list-header i {
+    font-size: 15px;
+    margin-top: 4px;
+
+}
+
+.list-header i:hover {
+    cursor: pointer;
+    color: red;
+}
+
 
 .list-cards {
     -webkit-box-flex: 1;
