@@ -73,6 +73,12 @@ function create_new_board(that){
         validate_notnull_error: _T('Mandatory field')
     });
 
+    fb.addField('filteringSelect', {
+        value: '^.method', lbl: 'Method',
+        default_value: 'none',
+        values: '^.methods'
+    });
+
     var bottom = dlg.bottom._('div');
     var saveattr = {
         'float': 'right', label: _T('Create'),

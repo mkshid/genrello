@@ -4,6 +4,8 @@
 from gnr.core.gnrbag import Bag
 from gnr.core.gnrdecorator import public_method
 
+from settings import BOARD_METHODS
+
 
 class GnrCustomWebPage(object):
 
@@ -30,6 +32,7 @@ class GnrCustomWebPage(object):
         tip='!!Logout'
         )
         sc.data('^page_selected', 0)
+        sc.data('new_board.methods', BOARD_METHODS)
 
     def team_page(self, pane):
         pane.attributes.update({'background_color': 'white',
