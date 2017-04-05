@@ -75,6 +75,7 @@ class GnrCustomWebPage(object):
             # Button to create a new board
             board_div.div(
                 id='create_new_board_' + team_id,
+                team_id=team_id,
                 _class='board-list-item',
                 connect_onclick="create_new_board(this);"
             ).div(
