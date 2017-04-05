@@ -52,6 +52,8 @@ function create_new_board(that){
     var box = center._('div', {datapath:'new_board', padding:'20px'});
     var fb = genro.dev.formbuilder(box, 1, {border_spacing:'6px'});
 
+    that.setRelativeData('new_board.team_id', that.getAttr('team_id'));
+
     fb.addField('textBox', {
         value:'^.name' ,
         lbl: 'Title',
@@ -73,6 +75,12 @@ function create_new_board(that){
         validate_notnull_error: _T('Mandatory field')
     });
 
+    fb.addField('filteringSelect', {
+        value: '^.method', lbl: 'Method',
+        default_value: 'none',
+        values: '^.methods'
+    });
+
     var bottom = dlg.bottom._('div');
     var saveattr = {
         'float': 'right', label: _T('Create'),
@@ -88,6 +96,7 @@ function create_new_board(that){
             var result = genro.serverCall('add_board', {
                 name: this.getRelativeData('new_board.name'),
                 description: this.getRelativeData('new_board.description'),
+                b_method: this.getRelativeData('new_board.method'),
                 position: team_boards_nums++,
                 team_id: team_id
             });

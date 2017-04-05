@@ -4,6 +4,8 @@
 from gnr.core.gnrbag import Bag
 from gnr.core.gnrdecorator import public_method
 
+from settings import BOARD_METHODS
+
 
 class GnrCustomWebPage(object):
 
@@ -30,6 +32,7 @@ class GnrCustomWebPage(object):
         tip='!!Logout'
         )
         sc.data('^page_selected', 0)
+        sc.data('new_board.methods', BOARD_METHODS)
 
     def team_page(self, pane):
         pane.attributes.update({'background_color': 'white',
@@ -72,6 +75,7 @@ class GnrCustomWebPage(object):
             # Button to create a new board
             board_div.div(
                 id='create_new_board_' + team_id,
+                team_id=team_id,
                 _class='board-list-item',
                 connect_onclick="create_new_board(this);"
             ).div(
@@ -261,12 +265,13 @@ class GnrCustomWebPage(object):
 
 
     @public_method
-    def add_board(self, name, description, position, team_id):
+    def add_board(self, name, description, b_method, position, team_id):
         """Add a new board"""
 
         values = {
             'name': name,
             'description': description,
+            'method': b_method,
             'position': position,
             'team_id': team_id,
             'owner_user_id': self.dbCurrentEnv()['user_id']
