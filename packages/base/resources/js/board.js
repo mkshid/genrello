@@ -94,6 +94,7 @@ function create_new_board(that){
             var result = genro.serverCall('add_board', {
                 name: this.getRelativeData('new_board.name'),
                 description: this.getRelativeData('new_board.description'),
+                b_method: this.getRelativeData('new_board.method'),
                 position: team_boards_nums++,
                 team_id: team_id
             });

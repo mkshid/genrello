@@ -264,12 +264,13 @@ class GnrCustomWebPage(object):
 
 
     @public_method
-    def add_board(self, name, description, position, team_id):
+    def add_board(self, name, description, b_method, position, team_id):
         """Add a new board"""
 
         values = {
             'name': name,
             'description': description,
+            'method': b_method,
             'position': position,
             'team_id': team_id,
             'owner_user_id': self.dbCurrentEnv()['user_id']
