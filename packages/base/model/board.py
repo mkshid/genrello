@@ -14,6 +14,7 @@ class Table(object):
                    validate_notnull_error='!!Mandatory field')
 
         tbl.column('description', name_long='!!Description')
+        tbl.column('method', name_long='!!Method')
         tbl.column('position', dtype='I', name_long='!!Position')
 
         tbl.column(
