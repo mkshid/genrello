@@ -97,6 +97,14 @@ class GnrCustomWebPage(object):
             id='board_page', nodeId='board_page',
             _class='board-page'
         )
+
+        pane.dataRpc(
+            'rels_saved', self.save_cards_rel,
+            board='=board', board_id='=board_id',
+            is_changed='=board_is_changed',
+            page_selected='^page_selected'
+        )
+
     @public_method
     def get_teams_boards(self):
         """Gets a bag with team and boards"""
@@ -170,6 +178,22 @@ class GnrCustomWebPage(object):
 
         return result
 
+
+    @public_method
+    def save_cards_rel(self, board, board_id, is_changed, page_selected):
+        """Save the chaange of relationship list-card """
+
+        if not is_changed:
+            return
+
+        tbl = self.db.table('base.card')
+        for _list in board[board_id]:
+            for card in _list.getValue():
+                tbl.update({
+                    'id': card.getLabel(),
+                    'list_id': _list.getLabel()
+                })
+                tbl.db.commit()
 
     @public_method
     def save_card(self, list_id, card_name):
