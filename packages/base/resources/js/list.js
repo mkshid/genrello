@@ -109,6 +109,8 @@ function create_list(node, board_id, list_id, cards){
             var card_lbl = card.getElementsByClassName('list-card-label')[0];
             card_lbl.innerText = card_bag.getItem('name');
             domNode.appendChild(card);
+
+            this.setRelativeData('board_is_changed', true)
         }
     });
 
